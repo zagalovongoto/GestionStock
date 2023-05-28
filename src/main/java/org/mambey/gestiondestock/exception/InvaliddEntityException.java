@@ -8,6 +8,7 @@ public class InvaliddEntityException extends RuntimeException{
     
     @Getter
     private ErrorCodes errorCode;
+    
     @Getter
     private List<String> errors;
 

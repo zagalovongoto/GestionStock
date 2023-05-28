@@ -29,6 +29,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     public ResponseEntity<ErrorDto> handleExcEntity(InvaliddEntityException exception, WebRequest webRequest){
 
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+
         final ErrorDto errorDto = ErrorDto.builder()
             .code(exception.getErrorCode())
             .httpCode(badRequest.value())
@@ -38,4 +39,5 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 
             return new ResponseEntity<>(errorDto, badRequest);
     }
+
 }

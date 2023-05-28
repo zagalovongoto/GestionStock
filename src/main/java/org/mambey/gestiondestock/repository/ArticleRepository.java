@@ -1,6 +1,7 @@
 package org.mambey.gestiondestock.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.mambey.gestiondestock.model.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 public interface ArticleRepository extends JpaRepository<Article, Integer>{
     
     //Spring comprend automatiquement
-    Article findByCodeArticle(String code);
+    Optional<Article> findByCodeArticle(String code);
 
     //Spring comprend automatiquement
     Article findByCodeArticleAndDesignation(String code, String designation);

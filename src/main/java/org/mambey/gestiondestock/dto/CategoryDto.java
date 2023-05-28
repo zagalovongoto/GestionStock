@@ -20,6 +20,7 @@ public class CategoryDto {
     @NotBlank(message = "Veuillez renseigner le code de la catégorie")
     private String code;
 
+    @NotBlank(message = "Veuillez renseigner la designation")
     private String designation;
 
     @JsonIgnore

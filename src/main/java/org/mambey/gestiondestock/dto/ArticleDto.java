@@ -2,6 +2,7 @@ package org.mambey.gestiondestock.dto;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -22,18 +23,21 @@ public class ArticleDto {
     @NotBlank(message = "Veuillez renseigner la désignation")
     private String designation;
 
-    @NotBlank(message = "Veuillez renseigner le prix unitaire")
+    @NotNull(message = "Veuillez renseigner le prix unitaire")
+    @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal prixUnitaireHt;
 
-    @NotBlank(message = "Veuillez renseigner le taux TVA")
+    @NotNull(message = "Veuillez renseigner le prix unitaire")
+    @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal tauxTva;
 
-    @NotBlank(message = "Veuillez renseigner le prix unitaire")
+    @NotNull(message = "Veuillez renseigner le prix unitaire")
+    @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal prixUnitaireTtc;
 
     private String photo;
 
-    @NotNull(message = "Veuillez renseigner la catégorie")
+    //@NotNull(message = "Veuillez renseigner la catégorie")
     private CategoryDto category;
 
     public static ArticleDto fromEntity(Article article){
