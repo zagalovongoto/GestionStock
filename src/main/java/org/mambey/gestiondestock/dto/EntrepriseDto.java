@@ -2,6 +2,10 @@ package org.mambey.gestiondestock.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import org.mambey.gestiondestock.model.Entreprise;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,18 +19,24 @@ public class EntrepriseDto {
     
     private Integer id;
 
+    @NotBlank(message = "Veuillez renseigner l'entreprise")
     private String nom;
 
     private String description;
 
+    @NotNull(message = "Veuillez renseigner l'adresse")
     private AdresseDto adresse;
 
+    @NotBlank(message = "Veuillez renseigner le code fiscal")
     private String codeFiscal;
 
     private String photo;
 
+    @NotBlank(message = "Veuillez renseigner l'adresse email")
+    @Email(message = "Email invalide")
     private String email;
 
+    @NotBlank(message = "Veuillez renseigner le numero de telephone")
     private String numTel;
 
     @JsonIgnore
@@ -63,7 +73,7 @@ public class EntrepriseDto {
         entreprise.setAdresse(AdresseDto.toEntity(entrepriseDto.getAdresse()));
         entreprise.setCodeFiscal(entrepriseDto.getCodeFiscal());
         entreprise.setPhoto(entrepriseDto.getPhoto());
-        entreprise.setEmail(entreprise.getEmail());
+        entreprise.setEmail(entrepriseDto.getEmail());
         entreprise.setNumTel(entrepriseDto.getNumTel());
 
         return entreprise;

@@ -1,15 +1,19 @@
 package org.mambey.gestiondestock.model;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +27,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "utilisateur")
+@Table(name = "utilisateur",
+       uniqueConstraints = {
+           //@UniqueConstraint(columnNames = "username"),
+           @UniqueConstraint(columnNames = "email")
+       }
+)
 public class Utilisateur extends AbstractEntity{
     
     @Column(name = "nom")
@@ -48,9 +57,13 @@ public class Utilisateur extends AbstractEntity{
     private String photo;
 
     @ManyToOne
-    @JoinTable(name = "identreprise")
+    @JoinColumn(name = "identreprise")
     private Entreprise entreprise;
 
-    @OneToMany(mappedBy = "utilisateur")
-    private List<Roles> roles;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles", 
+             joinColumns = @JoinColumn(name = "user_id"),
+             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Builder.Default
+    private Set<Roles> roles = new HashSet<>();
 }

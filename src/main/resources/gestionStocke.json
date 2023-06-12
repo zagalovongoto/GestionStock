@@ -1,0 +1,931 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "API REST Gestion de stock",
+      "description": "Cette API expose des points de terminaison pour gérer les stocks",
+      "termsOfService": "https://www.bezkoder.com/terms",
+      "contact": {
+        "name": "AGBETI Mambey Edem",
+        "url": "https://www.bezkoder.com",
+        "email": "mambosag@gmail.com"
+      },
+      "license": {
+        "name": "MIT License",
+        "url": "https://choosealicense.com/licenses/mit/"
+      },
+      "version": "1.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:8881",
+        "description": "URL pour l'environnement de développement"
+      },
+      {
+        "url": "https://gimuemoa-api.com",
+        "description": "URL pour l'environnement de production"
+      }
+    ],
+    "paths": {
+      "/gestiondestock/v1/utilisateurs/create": {
+        "post": {
+          "tags": [
+            "utilisateur-controller"
+          ],
+          "operationId": "save",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UtilisateurDto"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UtilisateurDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/fournisseurs/create": {
+        "post": {
+          "tags": [
+            "fournisseur-controller"
+          ],
+          "operationId": "save_1",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FournisseurDto"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/FournisseurDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/entreprises/create": {
+        "post": {
+          "tags": [
+            "entreprise-controller"
+          ],
+          "operationId": "save_2",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntrepriseDto"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/EntrepriseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/clients/create": {
+        "post": {
+          "tags": [
+            "client-controller"
+          ],
+          "operationId": "save_3",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientDto"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ClientDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/categories/create": {
+        "post": {
+          "tags": [
+            "category-controller"
+          ],
+          "operationId": "save_4",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/articles/create": {
+        "post": {
+          "tags": [
+            "article-controller"
+          ],
+          "operationId": "save_5",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleDto"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "201": {
+              "description": "Created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ArticleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/utilisateurs/{idUtilisateur}": {
+        "get": {
+          "tags": [
+            "utilisateur-controller"
+          ],
+          "operationId": "findById",
+          "parameters": [
+            {
+              "name": "idUtilisateur",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UtilisateurDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/utilisateurs/all": {
+        "get": {
+          "tags": [
+            "utilisateur-controller"
+          ],
+          "operationId": "findAll",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/UtilisateurDto"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/fournisseurs/{idFournisseurs}": {
+        "get": {
+          "tags": [
+            "fournisseur-controller"
+          ],
+          "operationId": "findById_1",
+          "parameters": [
+            {
+              "name": "idFournisseurs",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/FournisseurDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/fournisseurs/all": {
+        "get": {
+          "tags": [
+            "fournisseur-controller"
+          ],
+          "operationId": "findAll_1",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/FournisseurDto"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/entreprises/{idEntreprises}": {
+        "get": {
+          "tags": [
+            "entreprise-controller"
+          ],
+          "operationId": "findById_2",
+          "parameters": [
+            {
+              "name": "idEntreprises",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/EntrepriseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/entreprises/all": {
+        "get": {
+          "tags": [
+            "entreprise-controller"
+          ],
+          "operationId": "findAll_2",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/EntrepriseDto"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/clients/{idClient}": {
+        "get": {
+          "tags": [
+            "client-controller"
+          ],
+          "operationId": "findById_3",
+          "parameters": [
+            {
+              "name": "idClient",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ClientDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/clients/all": {
+        "get": {
+          "tags": [
+            "client-controller"
+          ],
+          "operationId": "findAll_3",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ClientDto"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/categories/{idCategory}": {
+        "get": {
+          "tags": [
+            "category-controller"
+          ],
+          "operationId": "findById_4",
+          "parameters": [
+            {
+              "name": "idCategory",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/categories/all": {
+        "get": {
+          "tags": [
+            "category-controller"
+          ],
+          "operationId": "findAll_4",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CategoryDto"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/articles/{idArticle}": {
+        "get": {
+          "tags": [
+            "article-controller"
+          ],
+          "operationId": "findById_5",
+          "parameters": [
+            {
+              "name": "idArticle",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ArticleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/articles/all": {
+        "get": {
+          "tags": [
+            "article-controller"
+          ],
+          "operationId": "findAll_5",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ArticleDto"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/utilisateurs/delete/{idUtilisateur}": {
+        "delete": {
+          "tags": [
+            "utilisateur-controller"
+          ],
+          "operationId": "delete",
+          "parameters": [
+            {
+              "name": "idUtilisateur",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/fournisseurs/delete/{idFournisseurs}": {
+        "delete": {
+          "tags": [
+            "fournisseur-controller"
+          ],
+          "operationId": "delete_1",
+          "parameters": [
+            {
+              "name": "idFournisseurs",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/entreprises/delete/{idEntreprises}": {
+        "delete": {
+          "tags": [
+            "entreprise-controller"
+          ],
+          "operationId": "delete_2",
+          "parameters": [
+            {
+              "name": "idEntreprises",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/clients/delete/{idClient}": {
+        "delete": {
+          "tags": [
+            "client-controller"
+          ],
+          "operationId": "delete_3",
+          "parameters": [
+            {
+              "name": "idlient",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/categories/delete/{idCategory}": {
+        "delete": {
+          "tags": [
+            "category-controller"
+          ],
+          "operationId": "delete_4",
+          "parameters": [
+            {
+              "name": "idCategory",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/gestiondestock/v1/articles/delete/{idArticle}": {
+        "delete": {
+          "tags": [
+            "article-controller"
+          ],
+          "operationId": "delete_5",
+          "parameters": [
+            {
+              "name": "idArticle",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "AdresseDto": {
+          "required": [
+            "adresse1",
+            "codePostale",
+            "pays",
+            "ville"
+          ],
+          "type": "object",
+          "properties": {
+            "adresse1": {
+              "type": "string"
+            },
+            "adresse2": {
+              "type": "string"
+            },
+            "ville": {
+              "type": "string"
+            },
+            "codePostale": {
+              "type": "string"
+            },
+            "pays": {
+              "type": "string"
+            }
+          }
+        },
+        "EntrepriseDto": {
+          "required": [
+            "adresse",
+            "codeFiscal",
+            "email",
+            "nom",
+            "numTel"
+          ],
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nom": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "adresse": {
+              "$ref": "#/components/schemas/AdresseDto"
+            },
+            "codeFiscal": {
+              "type": "string"
+            },
+            "photo": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "numTel": {
+              "type": "string"
+            }
+          }
+        },
+        "UtilisateurDto": {
+          "required": [
+            "adresse",
+            "email",
+            "nom",
+            "prenom"
+          ],
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nom": {
+              "type": "string"
+            },
+            "prenom": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "dateNaissance": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "motDePasse": {
+              "type": "string"
+            },
+            "adresse": {
+              "$ref": "#/components/schemas/AdresseDto"
+            },
+            "photo": {
+              "type": "string"
+            },
+            "entreprise": {
+              "$ref": "#/components/schemas/EntrepriseDto"
+            }
+          }
+        },
+        "FournisseurDto": {
+          "required": [
+            "adresse",
+            "mail",
+            "nom",
+            "numTel",
+            "prenom"
+          ],
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nom": {
+              "type": "string"
+            },
+            "prenom": {
+              "type": "string"
+            },
+            "adresse": {
+              "$ref": "#/components/schemas/AdresseDto"
+            },
+            "photo": {
+              "type": "string"
+            },
+            "mail": {
+              "type": "string"
+            },
+            "numTel": {
+              "type": "string"
+            },
+            "idEntreprise": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "ClientDto": {
+          "required": [
+            "adresse",
+            "mail",
+            "nom",
+            "numTel",
+            "prenom"
+          ],
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nom": {
+              "type": "string"
+            },
+            "prenom": {
+              "type": "string"
+            },
+            "adresse": {
+              "$ref": "#/components/schemas/AdresseDto"
+            },
+            "photo": {
+              "type": "string"
+            },
+            "mail": {
+              "type": "string"
+            },
+            "numTel": {
+              "type": "string"
+            },
+            "idEntreprise": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "CategoryDto": {
+          "required": [
+            "code",
+            "designation"
+          ],
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "code": {
+              "type": "string"
+            },
+            "designation": {
+              "type": "string"
+            },
+            "idEntreprise": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "ArticleDto": {
+          "required": [
+            "codeArticle",
+            "designation",
+            "prixUnitaireHt",
+            "prixUnitaireTtc",
+            "tauxTva"
+          ],
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "codeArticle": {
+              "type": "string"
+            },
+            "designation": {
+              "type": "string"
+            },
+            "prixUnitaireHt": {
+              "minimum": 0.0,
+              "exclusiveMinimum": true,
+              "type": "number"
+            },
+            "tauxTva": {
+              "minimum": 0.0,
+              "exclusiveMinimum": true,
+              "type": "number"
+            },
+            "prixUnitaireTtc": {
+              "minimum": 0.0,
+              "exclusiveMinimum": true,
+              "type": "number"
+            },
+            "photo": {
+              "type": "string"
+            },
+            "idEntreprise": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "category": {
+              "$ref": "#/components/schemas/CategoryDto"
+            }
+          }
+        }
+      }
+    }
+  }

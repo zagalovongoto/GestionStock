@@ -26,18 +26,20 @@ public class CategoryDto {
     @JsonIgnore
     private List<ArticleDto> articles;
 
+    private Integer idEntreprise;
+
 
     // Category --> CategoryDto
     public static CategoryDto fromEntity(Category category){
         if(category == null){
             return null;
-            // TODO Throw an exception
         }
 
         return CategoryDto.builder()
             .id(category.getId())
             .code(category.getCode())
             .designation(category.getDesignation())
+            .idEntreprise(category.getIdEntreprise())
             .build();
     }
 
@@ -46,13 +48,13 @@ public class CategoryDto {
 
         if(categoryDto == null){
             return null;
-            // TODO Throw an exception
         }
 
         Category category = new Category();
         category.setId(categoryDto.getId());
         category.setCode(categoryDto.getCode());
         category.setDesignation(categoryDto.getDesignation());
+        category.setIdEntreprise(categoryDto.getIdEntreprise());
 
         return category;
 

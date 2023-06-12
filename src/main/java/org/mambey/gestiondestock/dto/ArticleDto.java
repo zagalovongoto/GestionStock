@@ -17,7 +17,7 @@ public class ArticleDto {
      
     private Integer id;
 
-    @NotBlank(message = "Veuillez renseigner la ville")
+    @NotBlank(message = "Veuillez renseigner le code Article")
     private String codeArticle;
 
     @NotBlank(message = "Veuillez renseigner la désignation")
@@ -37,6 +37,8 @@ public class ArticleDto {
 
     private String photo;
 
+    private Integer idEntreprise;
+
     //@NotNull(message = "Veuillez renseigner la catégorie")
     private CategoryDto category;
 
@@ -55,6 +57,7 @@ public class ArticleDto {
             .prixUnitaireTtc(article.getPrixUnitaireTtc())
             .photo(article.getPhoto())
             .category(CategoryDto.fromEntity(article.getCategory()))
+            .idEntreprise(article.getIdEntreprise())
             .build();
     }
 
@@ -73,6 +76,7 @@ public class ArticleDto {
         article.setPrixUnitaireTtc(articleDto.getPrixUnitaireTtc());
         article.setPhoto(articleDto.getPhoto());
         article.setCategory(CategoryDto.toEntity(articleDto.getCategory()));
+        article.setIdEntreprise(articleDto.getIdEntreprise());
 
         return article;
     }

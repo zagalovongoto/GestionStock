@@ -1,0 +1,47 @@
+{"properties": [
+  {
+    "name": "flickr.api-key",
+    "type": "java.lang.String",
+    "description": "A description for 'flickr.api-key'"
+  },
+  {
+    "name": "flickr.api-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'flickr.api-secret'"
+  },
+  {
+    "name": "flickr.app-key",
+    "type": "java.lang.String",
+    "description": "A description for 'flickr.api-secret'"
+  },
+  {
+    "name": "flickr.app-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'flickr.api-secret'"
+  },
+  {
+    "name": "gimuemoa.openapi.dev-url",
+    "type": "java.lang.String",
+    "description": "A description for 'gimuemoa.openapi.dev-url'"
+  },
+  {
+    "name": "gimuemoa.openapi.prod-url",
+    "type": "java.lang.String",
+    "description": "A description for 'gimuemoa.openapi.dev-url'"
+  },
+  {
+    "name": "edem.app.jwt-header-name",
+    "type": "java.lang.String",
+    "description": "A description for 'edem.app.jwt-header-name'"
+  },
+  {
+    "name": "edem.app.jwt-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'edem.app.jwt-secret'"
+  },
+  {
+    "name": "edem.app.jwt-expiration-ms",
+    "type": "java.lang.String",
+    "description": "A description for 'edem.app.jwt-expiration-ms'"
+  }
+]}

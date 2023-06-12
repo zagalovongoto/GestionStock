@@ -1,10 +1,14 @@
 package org.mambey.gestiondestock.services.impl;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.mambey.gestiondestock.dto.CategoryDto;
+import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.model.Category;
 import org.mambey.gestiondestock.repository.CategoryRepository;
 import org.mambey.gestiondestock.services.CategoryService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
@@ -39,19 +43,33 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryDto findById(Integer id) {
-        return null;
+        if(id == null){
+            log.error("Category ID is null");
+            return null;
+        }
+
+        Optional<Category> category = categoryRepository.findById(id);
+
+        return category.map(CategoryDto::fromEntity)
+                      .orElseThrow(() -> new EntityNotFoundException(
+                        "Aucune categorie avec l'ID " + id + " n'a été trouvé dans la BDD", 
+                        ErrorCodes.CATEGORY_NOT_FOUND));
     }
 
     @Override
     public List<CategoryDto> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        return categoryRepository.findAll().stream()
+                                .map(CategoryDto::fromEntity)
+                                .collect(Collectors.toList());
     }
 
     @Override
     public void delete(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        if(id == null){
+            log.error("Category ID is null");
+        }
+
+        categoryRepository.deleteById(id);
     }
     
 }

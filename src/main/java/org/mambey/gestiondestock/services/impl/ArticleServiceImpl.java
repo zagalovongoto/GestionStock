@@ -2,6 +2,7 @@ package org.mambey.gestiondestock.services.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.mambey.gestiondestock.dto.ArticleDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
@@ -29,7 +30,6 @@ public class ArticleServiceImpl implements ArticleService{
     @Override
     public ArticleDto save(ArticleDto dto) {
 
-        System.out.println(dto.toString());
         var violations = articleValidator.validate(dto);
 
         if(!violations.isEmpty()){
@@ -52,11 +52,10 @@ public class ArticleServiceImpl implements ArticleService{
 
         Optional<Article> article = articleRepository.findById(id);
 
-        return Optional.of(ArticleDto.fromEntity(article.get()))
-                       .orElseThrow(() -> new EntityNotFoundException(
-                            "Aucun article avec l'ID " + id + " n'a été trouvé dans la BDD", 
-                            ErrorCodes.ARTICLE_NOT_FOUND)
-                       );
+        return article.map(ArticleDto::fromEntity)
+                      .orElseThrow(() -> new EntityNotFoundException(
+                        "Aucun article avec l'ID " + id + " n'a été trouvé dans la BDD", 
+                        ErrorCodes.ARTICLE_NOT_FOUND));
 
     }
 
@@ -69,21 +68,27 @@ public class ArticleServiceImpl implements ArticleService{
 
         Optional<Article> article = articleRepository.findByCodeArticle(codeArticle);
 
-        return Optional.of(ArticleDto.fromEntity(article.get()))
-                       .orElseThrow(() -> new EntityNotFoundException(
-                            "Aucun article avec le CODE " + codeArticle + " n'a été trouvé dans la BDD", 
-                            ErrorCodes.ARTICLE_NOT_FOUND)
-                       );
+        return article.map(ArticleDto::fromEntity)
+                      .orElseThrow(() -> new EntityNotFoundException(
+                        "Aucun article avec le CODE " + codeArticle + " n'a été trouvé dans la BDD", 
+                        ErrorCodes.ARTICLE_NOT_FOUND));
+
     }
 
     @Override
     public List<ArticleDto> findAll() {
-        return null;
+        return articleRepository.findAll().stream()
+                                .map(ArticleDto::fromEntity)
+                                .collect(Collectors.toList());
     }
 
     @Override
     public void delete(Integer id) {
-        
+        if(id == null){
+            log.error("Article ID is null");
+        }
+
+        articleRepository.deleteById(id);
     }
     
 

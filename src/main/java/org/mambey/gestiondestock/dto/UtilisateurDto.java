@@ -1,11 +1,12 @@
 package org.mambey.gestiondestock.dto;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.mambey.gestiondestock.model.Utilisateur;
 
@@ -27,10 +28,15 @@ public class UtilisateurDto {
     private String prenom;
 
     @NotBlank(message = "Veuillez renseigner l'adresse email de l'utilisateur")
+    @Size(max = 50, message = "Email trop long")
     private String email;
 
     private Instant dateNaissance;
 
+    @NotBlank(message = "Veuillez renseigner l'adresse email de l'utilisateur")
+    @Size(min = 8, message = "Mot de passe trop court")
+    @Size(max = 50, message = "Mot de passe trop long")
+    @JsonIgnore
     private String motDePasse;
 
     @NotNull
@@ -40,8 +46,7 @@ public class UtilisateurDto {
 
     private EntrepriseDto entreprise;
 
-    @JsonIgnore
-    private List<RolesDto> roles;
+    private Set<String> roles;
 
     public static UtilisateurDto fromEntity(Utilisateur utilisateur){
 
@@ -62,8 +67,8 @@ public class UtilisateurDto {
             .roles(
                 utilisateur.getRoles() != null ?
                 utilisateur.getRoles().stream()
-                .map(RolesDto::fromEntity)
-                .collect(Collectors.toList()) : null
+                .map(role -> role.getRoleName())
+                .collect(Collectors.toSet()) : null
             )
             .build();
     }
@@ -84,6 +89,10 @@ public class UtilisateurDto {
         utilisateur.setAdresse(AdresseDto.toEntity(utilisateurDto.getAdresse()));
         utilisateur.setPhoto(utilisateurDto.getPhoto());
         utilisateur.setEntreprise(EntrepriseDto.toEntity(utilisateurDto.getEntreprise()));
+        /*utilisateur.setRoles(utilisateurDto.getRoles() != null ?
+                utilisateurDto.getRoles().stream()
+                .map(RolesDto::toEntity)
+                .collect(Collectors.toSet()) : null);*/
 
         return utilisateur;
     }
