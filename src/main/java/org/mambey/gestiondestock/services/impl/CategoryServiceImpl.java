@@ -12,6 +12,7 @@ import org.mambey.gestiondestock.model.Category;
 import org.mambey.gestiondestock.repository.CategoryRepository;
 import org.mambey.gestiondestock.services.CategoryService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,8 @@ public class CategoryServiceImpl implements CategoryService{
             log.error("La categorie n'est pas valide {}", dto);
             throw new InvaliddEntityException("Categorie invalide", ErrorCodes.CATEGORY_NOT_VALID, violations);
         }
+
+        dto.setIdEntreprise(Integer.parseInt(MDC.get("idEntreprise")));
 
         return CategoryDto.fromEntity(
             categoryRepository.save(CategoryDto.toEntity(dto))

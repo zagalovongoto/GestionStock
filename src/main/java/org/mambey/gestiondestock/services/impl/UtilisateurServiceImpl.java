@@ -70,9 +70,9 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 
                 break;
                 case "MODERATEUR":
-                Roles modRole = roleRepository.findByRoleName(ERole.ROLE_MODERATOR.name())
+                Roles modRole = roleRepository.findByRoleName(ERole.ROLE_MODERATEUR.name())
                     .orElseThrow(() -> new EntityNotFoundException(
-                        "Aucun role avec le nom " + ERole.ROLE_MODERATOR + " n'a été trouvé dans la BDD", 
+                        "Aucun role avec le nom " + ERole.ROLE_MODERATEUR + " n'a été trouvé dans la BDD", 
                         ErrorCodes.ROLE_NOT_FOUND));
                 roles.add(modRole);
 

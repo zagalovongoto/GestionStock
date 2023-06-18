@@ -35,4 +35,14 @@ edem:
     jwtHeaderName: Authorization
     jwtSecret: ======================BezKoder=Spring===========================
     jwtExpirationMs: 86400000
+
+springdoc:
+  swagger-ui:
+    enabled: true
+
+# logging:
+#   level:
+#     org:
+#       springframework: DEBUG
+
   

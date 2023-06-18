@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 import org.mambey.gestiondestock.model.Utilisateur;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +36,7 @@ public class UtilisateurDto {
     @NotBlank(message = "Veuillez renseigner l'adresse email de l'utilisateur")
     @Size(min = 8, message = "Mot de passe trop court")
     @Size(max = 50, message = "Mot de passe trop long")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String motDePasse;
 
     @NotNull
