@@ -2,6 +2,7 @@ package org.mambey.gestiondestock.handlers;
 
 import org.mambey.gestiondestock.exception.EntityAlreadyExistsException;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
+import org.mambey.gestiondestock.exception.InvalidOperationException;
 import org.mambey.gestiondestock.exception.InvaliddEntityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
             .code(exception.getErrorCode())
             .httpCode(badRequest.value())
             .message(exception.getMessage())
+            .build();
+
+            return new ResponseEntity<>(errorDto, badRequest);
+    }
+
+    @ExceptionHandler(InvalidOperationException.class)
+    public ResponseEntity<ErrorDto> handleExcEntity(InvalidOperationException exception, WebRequest webRequest){
+
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+
+        final ErrorDto errorDto = ErrorDto.builder()
+            .code(exception.getErrorCode())
+            .httpCode(badRequest.value())
+            .message(exception.getMessage())
+            .errors(exception.getErrors())
             .build();
 
             return new ResponseEntity<>(errorDto, badRequest);

@@ -4,11 +4,13 @@ import java.io.InputStream;
 
 import org.mambey.gestiondestock.services.FlickrService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.uploader.UploadMetaData;
 
+@Service
 public class FlickrServiceImpl implements FlickrService{
 
     @Autowired

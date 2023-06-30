@@ -40,9 +40,12 @@ springdoc:
   swagger-ui:
     enabled: true
 
-# logging:
-#   level:
-#     org:
-#       springframework: DEBUG
+logging:
+  # level:
+  #   org:
+  #     springframework: DEBUG
+  file:
+    name: /Users/admin/gestiondestock.log
+
 
   

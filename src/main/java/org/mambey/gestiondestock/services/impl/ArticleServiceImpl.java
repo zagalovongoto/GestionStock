@@ -5,11 +5,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.mambey.gestiondestock.dto.ArticleDto;
+import org.mambey.gestiondestock.dto.LigneCommandeClientDto;
+import org.mambey.gestiondestock.dto.LigneCommandeFournisseurDto;
+import org.mambey.gestiondestock.dto.LigneVenteDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvaliddEntityException;
 import org.mambey.gestiondestock.model.Article;
 import org.mambey.gestiondestock.repository.ArticleRepository;
+import org.mambey.gestiondestock.repository.LigneCommandeClientRepository;
+import org.mambey.gestiondestock.repository.LigneCommandeFournisseurRepository;
+import org.mambey.gestiondestock.repository.LigneVenteRepository;
 import org.mambey.gestiondestock.services.ArticleService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
 import org.springframework.stereotype.Service;
@@ -24,6 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 public class ArticleServiceImpl implements ArticleService{
 
     private final ArticleRepository articleRepository;
+    private final LigneVenteRepository ligneVenteRepository;
+    private final LigneCommandeClientRepository ligneCommandeClientRepository;
+    private final LigneCommandeFournisseurRepository ligneCommandeFournisseurRepository;
 
     private final ObjectsValidator<ArticleDto> articleValidator;
 
@@ -83,6 +92,37 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
+    public List<LigneVenteDto> findHistoriqueVentes(Integer idArticle) {
+
+        return ligneVenteRepository.findAllByArticleId(idArticle).stream()
+            .map(LigneVenteDto::fromEntity)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LigneCommandeClientDto> findHistoriqueCommandeClient(Integer idArticle) {
+        
+        return ligneCommandeClientRepository.findAllByArticleId(idArticle).stream()
+            .map(LigneCommandeClientDto::fromEntity)
+            .collect(Collectors.toList()); 
+    }
+
+    @Override
+    public List<LigneCommandeFournisseurDto> findHistoriqueCommandeFournisseur(Integer idArticle) {
+    
+        return ligneCommandeFournisseurRepository.findAllByArticleId(idArticle).stream()
+            .map(LigneCommandeFournisseurDto::fromEntity)
+            .collect(Collectors.toList()); 
+    }
+
+    @Override
+    public List<ArticleDto> findAllArticleByIdCategory(Integer idCategory) {
+        return articleRepository.findAllByCategoryId(idCategory).stream()
+            .map(ArticleDto::fromEntity)
+            .collect(Collectors.toList()); 
+    }
+
+    @Override
     public void delete(Integer id) {
         if(id == null){
             log.error("Article ID is null");
@@ -90,6 +130,4 @@ public class ArticleServiceImpl implements ArticleService{
 
         articleRepository.deleteById(id);
     }
-    
-
 }

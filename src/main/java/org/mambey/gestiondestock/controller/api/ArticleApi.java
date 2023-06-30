@@ -4,6 +4,9 @@ import static org.mambey.gestiondestock.utils.Constants.APP_ROOT;
 import java.util.List;
 
 import org.mambey.gestiondestock.dto.ArticleDto;
+import org.mambey.gestiondestock.dto.LigneCommandeClientDto;
+import org.mambey.gestiondestock.dto.LigneCommandeFournisseurDto;
+import org.mambey.gestiondestock.dto.LigneVenteDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +31,18 @@ public interface ArticleApi {
 
     @GetMapping(value= "/articles/all")
     List<ArticleDto> findAll();
+
+    @GetMapping(value= "/articles/historique/vente/{idArticle}")
+    List<LigneVenteDto> findHistoriqueVentes(@PathVariable("idArticle") Integer idArticle);
+
+    @GetMapping(value= "/articles/historique/commandeclient/{idArticle}")
+    List<LigneCommandeClientDto> findHistoriqueCommandeClient(@PathVariable("idArticle") Integer idArticle);
+
+    @GetMapping(value= "/articles/historique/commandefournisseur/{idArticle}")
+    List<LigneCommandeFournisseurDto> findHistoriqueCommandeFournisseur(@PathVariable("idArticle") Integer idArticle);
+
+    @GetMapping(value= "/articles/filter/{idCategory}")
+    List<ArticleDto> findAllArticleByIdCategory(@PathVariable("idCategory") Integer idArticle);
 
     @DeleteMapping(value= "/articles/delete/{idArticle}")
     void delete(@PathVariable("idArticle") Integer id);

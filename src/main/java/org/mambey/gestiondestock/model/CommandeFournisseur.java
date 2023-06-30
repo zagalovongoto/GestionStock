@@ -29,6 +29,9 @@ public class CommandeFournisseur extends AbstractEntity{
     @Column(name = "dateCommande")
     private Instant dateCommande;
 
+    @Column(name = "etatcommande")
+    private EtatCommande etatCommade;
+
     @ManyToOne
     @JoinColumn(name = "idfournisseur")
     private Fournisseur fournisseur;

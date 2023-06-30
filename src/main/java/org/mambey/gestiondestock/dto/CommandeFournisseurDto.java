@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.mambey.gestiondestock.model.CommandeFournisseur;
+import org.mambey.gestiondestock.model.EtatCommande;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,6 +28,9 @@ public class CommandeFournisseurDto {
     @JsonFormat( shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Instant dateCommande;
 
+    @NotNull(message = "Veuillez renseigner l'état de la commande")
+    private EtatCommande etatCommade;
+
     private FournisseurDto fournisseur;
 
     @JsonIgnore
@@ -44,6 +48,7 @@ public class CommandeFournisseurDto {
             .id(commandeFournisseur.getId())
             .code(commandeFournisseur.getCode())
             .dateCommande(commandeFournisseur.getDateCommande())
+            .etatCommade(commandeFournisseur.getEtatCommade())
             .fournisseur(FournisseurDto.fromEntity(commandeFournisseur.getFournisseur()))
             .idEntreprise(commandeFournisseur.getIdEntreprise())
             .build();
@@ -60,9 +65,14 @@ public class CommandeFournisseurDto {
         commandeFournisseur.setId(commandeFournisseurDto.getId());
         commandeFournisseur.setCode(commandeFournisseurDto.getCode());
         commandeFournisseur.setDateCommande(commandeFournisseurDto.getDateCommande());
+        commandeFournisseur.setEtatCommade(commandeFournisseurDto.getEtatCommade());
         commandeFournisseur.setIdEntreprise(commandeFournisseurDto.getIdEntreprise());
         
         return commandeFournisseur;
 
+    }
+
+    public Boolean isCommandeLivree(){
+        return EtatCommande.LIVREE.equals(this.etatCommade);
     }
 }

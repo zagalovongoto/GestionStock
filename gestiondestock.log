@@ -1,0 +1,35 @@
+2023-06-27 10:41:51.057  INFO 59959 --- [main] o.m.g.GestionDeStockApplication          : Starting GestionDeStockApplication using Java 17.0.3 on MacBook-Pro-de-ADMINISTRATEUR.local with PID 59959 (/Users/admin/SPRING_PROJECT/gestiondestock/target/classes started by admin in /Users/admin/SPRING_PROJECT/gestiondestock)
+2023-06-27 10:41:51.059  INFO 59959 --- [main] o.m.g.GestionDeStockApplication          : No active profile set, falling back to 1 default profile: "default"
+2023-06-27 10:41:52.055  INFO 59959 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-06-27 10:41:52.164  INFO 59959 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 101 ms. Found 14 JPA repository interfaces.
+2023-06-27 10:41:52.810  INFO 59959 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8881 (http)
+2023-06-27 10:41:52.820  INFO 59959 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-27 10:41:52.821  INFO 59959 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.75]
+2023-06-27 10:41:52.933  INFO 59959 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-27 10:41:52.934  INFO 59959 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1810 ms
+2023-06-27 10:41:53.238  INFO 59959 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-06-27 10:41:53.299  INFO 59959 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.15.Final
+2023-06-27 10:41:53.445  INFO 59959 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-06-27 10:41:53.535  INFO 59959 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-06-27 10:41:53.686  INFO 59959 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-06-27 10:41:53.698  INFO 59959 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MariaDBDialect
+2023-06-27 10:41:53.900  WARN 59959 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [hibernate.ejb.interceptor], use [hibernate.session_factory.interceptor] instead
+2023-06-27 10:41:54.562  INFO 59959 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-06-27 10:41:54.569  INFO 59959 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-06-27 10:41:55.470  INFO 59959 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7d50b4c4, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7860a014, org.springframework.security.web.context.SecurityContextPersistenceFilter@6ad4ef13, org.springframework.security.web.header.HeaderWriterFilter@1930e8ef, org.springframework.security.web.authentication.logout.LogoutFilter@bb160fb, org.mambey.gestiondestock.security.AuthTokenFilter@5df7ae0a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7c7a4986, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7fb2645b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@86e8469, org.springframework.security.web.session.SessionManagementFilter@7236213e, org.springframework.security.web.access.ExceptionTranslationFilter@3c98eaa9, org.springframework.security.web.access.intercept.AuthorizationFilter@19439ec4]
+2023-06-27 10:41:55.578  WARN 59959 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-06-27 10:41:56.617  INFO 59959 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2023-06-27 10:41:56.682  INFO 59959 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8881 (http) with context path ''
+2023-06-27 10:41:56.711  INFO 59959 --- [main] o.m.g.GestionDeStockApplication          : Started GestionDeStockApplication in 6.158 seconds (JVM running for 6.452)
+2023-06-27 10:42:08.587  INFO 59959 --- [http-nio-8881-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-27 10:42:08.588  INFO 59959 --- [http-nio-8881-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-27 10:42:08.590  INFO 59959 --- [http-nio-8881-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-06-27 10:42:08.618 ERROR 59959 --- [http-nio-8881-exec-2] o.m.g.security.jwt.JwtUtils              : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2023-06-27 10:42:08.903 ERROR 59959 --- [http-nio-8881-exec-2] o.m.g.s.handlers.AuthEntryPointJwt       : Unauthorized error: Bad credentials
+2023-06-27 10:44:59.024 ERROR 59959 --- [http-nio-8881-exec-5] o.m.g.security.jwt.JwtUtils              : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2023-06-27 10:44:59.096 ERROR 59959 --- [http-nio-8881-exec-5] o.m.g.s.handlers.AuthEntryPointJwt       : Unauthorized error: Bad credentials
+2023-06-27 10:47:18.529 ERROR 59959 --- [http-nio-8881-exec-8] o.m.g.security.jwt.JwtUtils              : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2023-06-27 10:47:18.618 ERROR 59959 --- [http-nio-8881-exec-8] o.m.g.s.handlers.AuthEntryPointJwt       : Unauthorized error: Bad credentials
+2023-06-27 10:52:57.160  INFO 59959 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-27 10:52:57.162  INFO 59959 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-06-27 10:52:57.167  INFO 59959 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

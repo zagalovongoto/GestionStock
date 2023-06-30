@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.mambey.gestiondestock.controller.api.ArticleApi;
 import org.mambey.gestiondestock.dto.ArticleDto;
+import org.mambey.gestiondestock.dto.LigneCommandeClientDto;
+import org.mambey.gestiondestock.dto.LigneCommandeFournisseurDto;
+import org.mambey.gestiondestock.dto.LigneVenteDto;
 import org.mambey.gestiondestock.services.ArticleService;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,9 +39,27 @@ public class ArticleController implements ArticleApi{
     }
 
     @Override
-    public void delete(Integer id) {
-        articleService.delete(id);
+    public List<LigneVenteDto> findHistoriqueVentes(Integer idArticle) {
+        return articleService.findHistoriqueVentes(idArticle);
     }
 
-    
+    @Override
+    public List<LigneCommandeClientDto> findHistoriqueCommandeClient(Integer idArticle) {
+        return articleService.findHistoriqueCommandeClient(idArticle);
+    }
+
+    @Override
+    public List<LigneCommandeFournisseurDto> findHistoriqueCommandeFournisseur(Integer idArticle) {
+        return articleService.findHistoriqueCommandeFournisseur(idArticle);
+    }
+
+    @Override
+    public List<ArticleDto> findAllArticleByIdCategory(Integer idArticle) {
+        return articleService.findAllArticleByIdCategory(idArticle);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        articleService.delete(id);
+    }   
 }

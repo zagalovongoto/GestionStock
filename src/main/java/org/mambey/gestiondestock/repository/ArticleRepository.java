@@ -13,6 +13,8 @@ public interface ArticleRepository extends JpaRepository<Article, Integer>{
     //Spring comprend automatiquement
     Optional<Article> findByCodeArticle(String code);
 
+    List<Article> findAllByCategoryId(Integer idCategory);
+
     //Spring comprend automatiquement
     Article findByCodeArticleAndDesignation(String code, String designation);
 

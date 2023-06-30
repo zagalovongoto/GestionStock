@@ -7,8 +7,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.mambey.gestiondestock.model.CommandeClient;
+import org.mambey.gestiondestock.model.EtatCommande;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Builder;
 import lombok.Data;
@@ -25,11 +27,14 @@ public class CommandeClientDto {
     @NotNull(message = "Veuillez renseigner la date de commande")
     @JsonFormat( shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Instant date;
+
+    @NotNull(message = "Veuillez renseigner l'état de la commande")
+    private EtatCommande etatCommade;
     
     @NotNull(message = "Veuillez renseigner le client")
     private ClientDto client;
 
-    //@JsonIgnore
+    @JsonIgnore
     private List<LigneCommandeClientDto> ligneCommandeClients;
 
     private Integer idEntreprise;
@@ -44,6 +49,7 @@ public class CommandeClientDto {
             .id(commandeClient.getId())
             .code(commandeClient.getCode())
             .date(commandeClient.getDate())
+            .etatCommade(commandeClient.getEtatCommade())
             .client(ClientDto.fromEntity(commandeClient.getClient()))
             .idEntreprise(commandeClient.getIdEntreprise())
             .build();
@@ -60,9 +66,14 @@ public class CommandeClientDto {
         commandeClient.setId(commandeClientDto.getId());
         commandeClient.setCode(commandeClientDto.getCode());
         commandeClient.setDate(commandeClientDto.getDate());
+        commandeClient.setEtatCommade(commandeClientDto.getEtatCommade());
         commandeClient.setIdEntreprise(commandeClientDto.getIdEntreprise());
         
         return commandeClient;
 
+    }
+
+    public Boolean isCommandeLivree(){
+        return EtatCommande.LIVREE.equals(this.etatCommade);
     }
 }

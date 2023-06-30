@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.mambey.gestiondestock.security.model.ExtendedUser;
 import org.mambey.gestiondestock.security.payload.request.LoginRequest;
 import org.mambey.gestiondestock.security.payload.response.LoginResponse;
-import org.mambey.gestiondestock.repository.UtilisateurRepository;
 import org.mambey.gestiondestock.security.jwt.JwtUtils;
 import static org.mambey.gestiondestock.utils.Constants.APP_ROOT;
 
@@ -31,9 +30,6 @@ public class AuthController {
   AuthenticationManager authenticationManager;
 
   @Autowired
-  UtilisateurRepository userRepository;
-
-  @Autowired
   PasswordEncoder encoder;
 
   @Autowired
@@ -41,8 +37,6 @@ public class AuthController {
 
   @PostMapping("/auth/authenticate")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-    System.out.println((loginRequest.toString()));
 
     Authentication authentication = authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
