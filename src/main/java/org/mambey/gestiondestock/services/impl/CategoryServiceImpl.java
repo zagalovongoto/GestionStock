@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 import org.mambey.gestiondestock.dto.CategoryDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
+import org.mambey.gestiondestock.exception.InvalidOperationException;
 import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.model.Article;
 import org.mambey.gestiondestock.model.Category;
+import org.mambey.gestiondestock.repository.ArticleRepository;
 import org.mambey.gestiondestock.repository.CategoryRepository;
 import org.mambey.gestiondestock.services.CategoryService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
@@ -24,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CategoryServiceImpl implements CategoryService{
 
     private final CategoryRepository categoryRepository;
-
+    private final ArticleRepository articleRepository;
     private final ObjectsValidator<CategoryDto> categoryValidator;
 
     @Override
@@ -70,6 +73,14 @@ public class CategoryServiceImpl implements CategoryService{
     public void delete(Integer id) {
         if(id == null){
             log.error("Category ID is null");
+        }
+
+        List<Article> articles = articleRepository.findAllByCategoryId(id);
+        if(!articles.isEmpty()){
+            throw new InvalidOperationException(
+                "Impossible de supprimer une catégorie déjà utilisé",
+                ErrorCodes.CATEGORY_ALREADY_IN_USE
+            );
         }
 
         categoryRepository.deleteById(id);

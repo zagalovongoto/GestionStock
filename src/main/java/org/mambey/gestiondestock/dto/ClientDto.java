@@ -2,6 +2,7 @@ package org.mambey.gestiondestock.dto;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -25,6 +26,7 @@ public class ClientDto {
     private String prenom;
 
     @NotNull(message = "Veuillez renseigner l'adresse du client")
+    @Valid
     private AdresseDto adresse;
 
     private String photo;

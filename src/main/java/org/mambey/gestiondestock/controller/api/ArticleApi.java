@@ -16,34 +16,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@RequestMapping(value = APP_ROOT)
+@RequestMapping(value = APP_ROOT + "/articles")
 public interface ArticleApi {
     
-    @PostMapping(value= "/articles/create")
+    @PostMapping(value= "/create")
     @ResponseStatus(HttpStatus.CREATED)
     ArticleDto save(@RequestBody ArticleDto dto);
 
-    @GetMapping(value= "/articles/{idArticle}")
+    @GetMapping(value= "/{idArticle}")
     ArticleDto findById(@PathVariable("idArticle") Integer id);
 
-    @GetMapping(value= "/articles2/{codeArticle}")
+    @GetMapping(value= "/find/{codeArticle}")
     ArticleDto findByCodeArticle(@PathVariable("codeArticle") String codeArticle);
 
-    @GetMapping(value= "/articles/all")
+    @GetMapping(value= "/all")
     List<ArticleDto> findAll();
 
-    @GetMapping(value= "/articles/historique/vente/{idArticle}")
+    @GetMapping(value= "/historique/vente/{idArticle}")
     List<LigneVenteDto> findHistoriqueVentes(@PathVariable("idArticle") Integer idArticle);
 
-    @GetMapping(value= "/articles/historique/commandeclient/{idArticle}")
+    @GetMapping(value= "/historique/commandeclient/{idArticle}")
     List<LigneCommandeClientDto> findHistoriqueCommandeClient(@PathVariable("idArticle") Integer idArticle);
 
-    @GetMapping(value= "/articles/historique/commandefournisseur/{idArticle}")
+    @GetMapping(value= "/historique/commandefournisseur/{idArticle}")
     List<LigneCommandeFournisseurDto> findHistoriqueCommandeFournisseur(@PathVariable("idArticle") Integer idArticle);
 
-    @GetMapping(value= "/articles/filter/{idCategory}")
+    @GetMapping(value= "/filter/{idCategory}")
     List<ArticleDto> findAllArticleByIdCategory(@PathVariable("idCategory") Integer idArticle);
 
-    @DeleteMapping(value= "/articles/delete/{idArticle}")
+    @DeleteMapping(value= "/delete/{idArticle}")
     void delete(@PathVariable("idArticle") Integer id);
 }

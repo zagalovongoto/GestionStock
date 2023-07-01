@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 import org.mambey.gestiondestock.dto.FournisseurDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
+import org.mambey.gestiondestock.exception.InvalidOperationException;
 import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.model.CommandeFournisseur;
 import org.mambey.gestiondestock.model.Fournisseur;
+import org.mambey.gestiondestock.repository.CommandeFournisseurRepository;
 import org.mambey.gestiondestock.repository.FournisseurRepository;
 import org.mambey.gestiondestock.services.FournisseurService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
@@ -23,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FournisseurServiceImpl implements FournisseurService{
 
     private final FournisseurRepository fournisseurRepository;
-
+    private final CommandeFournisseurRepository commandeFournisseurRepository;
     private final ObjectsValidator<FournisseurDto> fournisseurValidator;
 
     @Override
@@ -69,6 +72,14 @@ public class FournisseurServiceImpl implements FournisseurService{
     public void delete(Integer id) {
         if(id == null){
             log.error("Fournisseur ID is null");
+        }
+
+        List<CommandeFournisseur> commandeFournisseurs = commandeFournisseurRepository.findAllByFournisseurId(id);
+        if(!commandeFournisseurs.isEmpty()){
+            throw new InvalidOperationException(
+                "Impossible de supprimer un fournisseur qui a deja des commandes",
+                ErrorCodes.FOURNISSEUR_ALREADY_IN_USE
+            );
         }
 
         fournisseurRepository.deleteById(id);

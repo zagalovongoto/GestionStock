@@ -2,6 +2,7 @@ package org.mambey.gestiondestock.services;
 
 import java.util.List;
 
+import org.mambey.gestiondestock.dto.ChangerMotDePasseUtilisateurDto;
 import org.mambey.gestiondestock.dto.UtilisateurDto;
 
 public interface UtilisateurService {
@@ -13,4 +14,8 @@ public interface UtilisateurService {
     List<UtilisateurDto> findAll();
 
     void delete(Integer id);
+
+    UtilisateurDto findByEmail(String email);
+
+    UtilisateurDto changerMotDePasse(ChangerMotDePasseUtilisateurDto dto);
 }

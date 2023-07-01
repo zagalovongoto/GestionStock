@@ -10,8 +10,12 @@ import org.mambey.gestiondestock.dto.LigneCommandeFournisseurDto;
 import org.mambey.gestiondestock.dto.LigneVenteDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
+import org.mambey.gestiondestock.exception.InvalidOperationException;
 import org.mambey.gestiondestock.exception.InvaliddEntityException;
 import org.mambey.gestiondestock.model.Article;
+import org.mambey.gestiondestock.model.LigneCommandeClient;
+import org.mambey.gestiondestock.model.LigneCommandeFournisseur;
+import org.mambey.gestiondestock.model.LigneVente;
 import org.mambey.gestiondestock.repository.ArticleRepository;
 import org.mambey.gestiondestock.repository.LigneCommandeClientRepository;
 import org.mambey.gestiondestock.repository.LigneCommandeFournisseurRepository;
@@ -126,6 +130,30 @@ public class ArticleServiceImpl implements ArticleService{
     public void delete(Integer id) {
         if(id == null){
             log.error("Article ID is null");
+        }
+
+        List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findAllByArticleId(id);
+        if(!ligneCommandeClients.isEmpty()){
+            throw new InvalidOperationException(
+                "Impossible de supprimer un article déjà utilisé dans des commandes",
+                ErrorCodes.ARTICLE_ALREADY_IN_USE
+            );
+        }
+
+        List<LigneCommandeFournisseur> ligneCommandeFournisseurs = ligneCommandeFournisseurRepository.findAllByArticleId(id);
+        if(!ligneCommandeFournisseurs.isEmpty()){
+            throw new InvalidOperationException(
+                "Impossible de supprimer un article déjà utilisé dans des commandes fournisseurs",
+                ErrorCodes.ARTICLE_ALREADY_IN_USE
+            );
+        }
+
+        List<LigneVente> ligneVentes = ligneVenteRepository.findAllByArticleId(id);
+        if(!ligneVentes.isEmpty()){
+            throw new InvalidOperationException(
+                "Impossible de supprimer un article déjà utilisé dans des ventes",
+                ErrorCodes.ARTICLE_ALREADY_IN_USE
+            );
         }
 
         articleRepository.deleteById(id);

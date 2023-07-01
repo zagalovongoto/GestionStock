@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@RequestMapping(value = APP_ROOT)
+@RequestMapping(value = APP_ROOT + "/fournisseurs")
 public interface FournisseurApi {
     
-    @PostMapping(value= "/fournisseurs/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value= "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     FournisseurDto save(@RequestBody FournisseurDto dto);
 
-    @GetMapping(value= "/fournisseurs/{idFournisseurs}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value= "/{idFournisseurs}", produces = MediaType.APPLICATION_JSON_VALUE)
     FournisseurDto findById(@PathVariable("idFournisseurs") Integer id);
 
-    @GetMapping(value= "/fournisseurs/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value= "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     List<FournisseurDto> findAll();
 
-    @DeleteMapping(value= "/fournisseurs/delete/{idFournisseurs}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value= "/delete/{idFournisseurs}", produces = MediaType.APPLICATION_JSON_VALUE)
     void delete(@PathVariable("idFournisseurs") Integer id);
 }

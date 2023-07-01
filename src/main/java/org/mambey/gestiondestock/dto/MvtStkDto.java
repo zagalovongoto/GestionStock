@@ -6,6 +6,7 @@ import java.time.Instant;
 import javax.validation.constraints.NotNull;
 
 import org.mambey.gestiondestock.model.MvtStk;
+import org.mambey.gestiondestock.model.SourceMvtStk;
 import org.mambey.gestiondestock.model.TypeMvtStk;
 
 import lombok.Builder;
@@ -28,6 +29,8 @@ public class MvtStkDto {
 
     private TypeMvtStk typeMvt;
 
+    private SourceMvtStk sourceMvt;
+
     private Integer idEntreprise;
 
     public static MvtStkDto fromEntity(MvtStk mvtStk){
@@ -42,6 +45,7 @@ public class MvtStkDto {
             .quantite(mvtStk.getQuantite())
             .article(ArticleDto.fromEntity(mvtStk.getArticle()))
             .typeMvt(mvtStk.getTypeMvt())
+            .sourceMvt(mvtStk.getSourceMvt())
             .idEntreprise(mvtStk.getIdEntreprise())
             .build();
     }
@@ -58,6 +62,7 @@ public class MvtStkDto {
         mvtStk.setQuantite(mvtStkDto.getQuantite());
         mvtStk.setArticle(ArticleDto.toEntity(mvtStkDto.getArticle()));
         mvtStk.setTypeMvt(mvtStkDto.getTypeMvt());
+        mvtStk.setSourceMvt(mvtStkDto.getSourceMvt());
         mvtStk.setIdEntreprise(mvtStkDto.getIdEntreprise());
 
         return mvtStk;

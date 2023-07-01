@@ -6,10 +6,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.mambey.gestiondestock.dto.ChangerMotDePasseUtilisateurDto;
 import org.mambey.gestiondestock.dto.UtilisateurDto;
 import org.mambey.gestiondestock.exception.EntityAlreadyExistsException;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
+import org.mambey.gestiondestock.exception.InvalidOperationException;
 import org.mambey.gestiondestock.exception.InvaliddEntityException;
 import org.mambey.gestiondestock.model.Roles;
 import org.mambey.gestiondestock.model.Utilisateur;
@@ -20,6 +22,7 @@ import org.mambey.gestiondestock.services.ObjectsValidator;
 import org.mambey.gestiondestock.services.UtilisateurService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -128,6 +131,72 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 
         utilisateurRepository.deleteById(id);
     }
+
+    @Override
+    public UtilisateurDto findByEmail(String email) {
+        
+        return utilisateurRepository.findUtilisateurByEmail(email)
+            .map(UtilisateurDto::fromEntity)
+            .orElseThrow(() -> new EntityNotFoundException(
+                "Aucun utilisateur avec l'email = " + email + " n'a été trouvé dans la BDD",
+                ErrorCodes.UTILISATEUR_NOT_FOUND
+            ));
+    }
+
+    @Override
+    public UtilisateurDto changerMotDePasse(ChangerMotDePasseUtilisateurDto dto) {
+        
+        validate(dto);
+        
+        Optional<Utilisateur> utilisateurOptional = utilisateurRepository.findById(dto.getId());
+        if(utilisateurOptional.isEmpty()){
+            log.warn("Aucun utilisateur n'a été trouvé avec l'ID "+ dto.getId());
+            throw new EntityNotFoundException(
+                "Aucun utilisateur n'a été trouvé avec l'ID "+ dto.getId() , 
+                ErrorCodes.UTILISATEUR_NOT_FOUND
+            );
+        }
+
+        Utilisateur utilisateur = utilisateurOptional.get();
+        utilisateur.setMotDePasse(encoder.encode(dto.getMotDePasse()));
+        return UtilisateurDto.fromEntity(
+            utilisateurRepository.save(utilisateur)
+        );
+    }
     
 
+    private void validate(ChangerMotDePasseUtilisateurDto dto){
+
+        if(dto == null){
+            log.warn("Impossible de modifier le mot de passe avec un objet null");
+            throw new InvaliddEntityException(
+                "Aucune information n'a été fourni pour pouvoir changer le mot de passe." , 
+                ErrorCodes.UTILISATEUR_CHANGE_PASSWORD_OBJECT_NOT_VALID
+            );
+        }
+
+        if(dto.getId() == null){
+            log.warn("Impossible de modifier le mot de passe avec un ID null");
+            throw new InvaliddEntityException(
+                "ID utilisateur null: impossible de modifier le mot de passe" , 
+                ErrorCodes.UTILISATEUR_CHANGE_PASSWORD_OBJECT_NOT_VALID
+            );
+        }
+
+        if(!StringUtils.hasLength(dto.getMotDePasse()) || !StringUtils.hasLength(dto.getConfirmMotDePasse())){
+            log.warn("Impossible de modifier le mot de passe avec un ID null");
+            throw new InvalidOperationException(
+                "Impossible de modifier le mot de passe avec un mot de passe NULL" , 
+                ErrorCodes.UTILISATEUR_CHANGE_PASSWORD_OBJECT_NOT_VALID
+            );
+        }
+
+        if(!dto.getMotDePasse().equals(dto.getConfirmMotDePasse())){
+            log.warn("Impossible de modifier le mot de passe avec deux mots de passe différents");
+            throw new InvalidOperationException(
+                "MOts de passe utilisateur non conformes: Impossible de modifier le mot de passe" , 
+                ErrorCodes.UTILISATEUR_CHANGE_PASSWORD_OBJECT_NOT_VALID
+            );
+        }
+    }
 }

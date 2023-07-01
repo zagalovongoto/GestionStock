@@ -14,23 +14,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@RequestMapping(value = APP_ROOT)
+@RequestMapping(value = APP_ROOT + "/utilisateurs")
 public interface UtilisateurApi {
     
-    @PostMapping(value= "/utilisateurs/create")
+    @PostMapping(value= "/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
     UtilisateurDto save(@RequestBody UtilisateurDto dto);
 
-    @GetMapping(value= "/utilisateurs/{idUtilisateur}")
+    @GetMapping(value= "/{idUtilisateur}")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     UtilisateurDto findById(@PathVariable("idUtilisateur") Integer id);
 
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    @GetMapping(value= "/utilisateurs/all")
+    @GetMapping(value= "/all")
     List<UtilisateurDto> findAll();
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping(value= "/utilisateurs/delete/{idUtilisateur}")
+    @DeleteMapping(value= "/delete/{idUtilisateur}")
     void delete(@PathVariable("idUtilisateur") Integer id);
 }

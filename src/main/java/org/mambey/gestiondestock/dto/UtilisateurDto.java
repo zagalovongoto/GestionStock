@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -40,6 +41,7 @@ public class UtilisateurDto {
     private String motDePasse;
 
     @NotNull
+    @Valid
     private AdresseDto adresse;
 
     private String photo;

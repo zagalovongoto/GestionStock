@@ -1,14 +1,17 @@
 package org.mambey.gestiondestock.services.impl;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.mambey.gestiondestock.dto.ArticleDto;
 import org.mambey.gestiondestock.dto.CommandeFournisseurDto;
 import org.mambey.gestiondestock.dto.FournisseurDto;
 import org.mambey.gestiondestock.dto.LigneCommandeFournisseurDto;
+import org.mambey.gestiondestock.dto.MvtStkDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
@@ -18,11 +21,14 @@ import org.mambey.gestiondestock.model.CommandeFournisseur;
 import org.mambey.gestiondestock.model.EtatCommande;
 import org.mambey.gestiondestock.model.Fournisseur;
 import org.mambey.gestiondestock.model.LigneCommandeFournisseur;
+import org.mambey.gestiondestock.model.SourceMvtStk;
+import org.mambey.gestiondestock.model.TypeMvtStk;
 import org.mambey.gestiondestock.repository.ArticleRepository;
 import org.mambey.gestiondestock.repository.CommandeFournisseurRepository;
 import org.mambey.gestiondestock.repository.FournisseurRepository;
 import org.mambey.gestiondestock.repository.LigneCommandeFournisseurRepository;
 import org.mambey.gestiondestock.services.CommandeFournisseurService;
+import org.mambey.gestiondestock.services.MvtStkService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -38,6 +44,7 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
     private final CommandeFournisseurRepository commandeFournisseurRepository;
     private final FournisseurRepository fournisseurRepository;
     private final ArticleRepository articleRepository;
+    private MvtStkService mvtStkService;
     private LigneCommandeFournisseurRepository ligneCommandeFournisseurRepository;
 
     private final ObjectsValidator<CommandeFournisseurDto> commandeFournisseurValidator;
@@ -110,9 +117,13 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
 
         commandeFournisseur.setEtatCommade(etatCommande);
 
-        return CommandeFournisseurDto.fromEntity(
-            commandeFournisseurRepository.save(CommandeFournisseurDto.toEntity(commandeFournisseur))
-        );
+        CommandeFournisseur savedCmdFrn = commandeFournisseurRepository.save(CommandeFournisseurDto.toEntity(commandeFournisseur));
+
+        if(commandeFournisseur.isCommandeLivree()){
+            updateMvtStk(idCommande);
+        }
+
+        return CommandeFournisseurDto.fromEntity(savedCmdFrn);
     }
 
     @Override
@@ -271,6 +282,14 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
             log.error("Command fournisseur ID is null");
         }
 
+        List<LigneCommandeFournisseur> ligneCommandeFournisseurs = ligneCommandeFournisseurRepository.findAllByCommandeFournisseurId(id);
+        if(!ligneCommandeFournisseurs.isEmpty()){
+            throw new InvalidOperationException(
+                "Impossible de supprimer une commande fournisseur deja utilisé",
+                ErrorCodes.COMMANDE_FOURNISSEUR_ALREADY_IN_USE
+            );
+        }
+
         commandeFournisseurRepository.deleteById(id);
     }
 
@@ -334,4 +353,20 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
         return  ligneCommandeClientOptional;
     }
 
+    private void updateMvtStk(Integer idCommande){
+
+        List<LigneCommandeFournisseur> ligneCommandeFournisseurs = ligneCommandeFournisseurRepository.findAllByCommandeFournisseurId(idCommande);
+        ligneCommandeFournisseurs.forEach(lig -> {
+            MvtStkDto sortieStock = MvtStkDto.builder()
+                .article(ArticleDto.fromEntity(lig.getArticle()))
+                .dateMvt(Instant.now())
+                .typeMvt(TypeMvtStk.SORTIE)
+                .sourceMvt(SourceMvtStk.COMMANDE_CLIENT)
+                .quantite(lig.getQuantite())
+                .idEntreprise(lig.getIdEntreprise())
+                .build();
+
+            mvtStkService.sortieStock(sortieStock);
+        });
+    }
 }

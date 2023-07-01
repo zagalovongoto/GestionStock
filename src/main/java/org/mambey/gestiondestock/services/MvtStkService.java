@@ -1,16 +1,22 @@
 package org.mambey.gestiondestock.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.mambey.gestiondestock.dto.MvtStkDto;
 
 public interface MvtStkService {
-    
-    MvtStkDto save(MvtStkDto dto);
 
-    MvtStkDto findById(Integer id);
+    BigDecimal stockReelArticle(Integer idArticle);
 
-    List<MvtStkDto> findAll();
+    List<MvtStkDto> mvtStkArticle(Integer idArticle);
 
-    void delete(Integer id);
+    MvtStkDto entreeStock(MvtStkDto dto);
+
+    MvtStkDto sortieStock(MvtStkDto dto);
+
+    MvtStkDto correctionStockPos(MvtStkDto dto);
+
+    MvtStkDto correctionStockNeg(MvtStkDto dto);
+
 }

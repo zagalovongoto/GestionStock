@@ -11,20 +11,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+@RequestMapping(value = APP_ROOT + "/categories")
 public interface CategoryApi {
     
-    @PostMapping(value= APP_ROOT + "/categories/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value= "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     CategoryDto save(@RequestBody CategoryDto dto);
 
-    @GetMapping(value= APP_ROOT + "/categories/{idCategory}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value= "/{idCategory}", produces = MediaType.APPLICATION_JSON_VALUE)
     CategoryDto findById(@PathVariable("idCategory") Integer id);
 
-    @GetMapping(value= APP_ROOT + "/categories/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value= "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     List<CategoryDto> findAll();
 
-    @DeleteMapping(value= APP_ROOT + "/categories/delete/{idCategory}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value= "/delete/{idCategory}", produces = MediaType.APPLICATION_JSON_VALUE)
     void delete(@PathVariable("idCategory") Integer id);
 }

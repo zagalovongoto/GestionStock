@@ -2,6 +2,7 @@ package org.mambey.gestiondestock.dto;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,6 +26,7 @@ public class EntrepriseDto {
     private String description;
 
     @NotNull(message = "Veuillez renseigner l'adresse")
+    @Valid
     private AdresseDto adresse;
 
     @NotBlank(message = "Veuillez renseigner le code fiscal")

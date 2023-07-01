@@ -7,9 +7,12 @@ import java.util.stream.Collectors;
 import org.mambey.gestiondestock.dto.ClientDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
+import org.mambey.gestiondestock.exception.InvalidOperationException;
 import org.mambey.gestiondestock.exception.InvaliddEntityException;
 import org.mambey.gestiondestock.model.Client;
+import org.mambey.gestiondestock.model.CommandeClient;
 import org.mambey.gestiondestock.repository.ClientRepository;
+import org.mambey.gestiondestock.repository.CommandeClientRepository;
 import org.mambey.gestiondestock.services.ClientService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ClientServiceImpl implements ClientService{
 
     private final ClientRepository clientRepository;
-
+    private final CommandeClientRepository commandeClientRepository;
     private final ObjectsValidator<ClientDto> clienValidator;
 
     @Override
@@ -69,6 +72,14 @@ public class ClientServiceImpl implements ClientService{
     public void delete(Integer id) {
         if(id == null){
             log.error("Client ID is null");
+        }
+
+        List<CommandeClient> commandeClients = commandeClientRepository.findAllByClientId(id);
+        if(!commandeClients.isEmpty()){
+            throw new InvalidOperationException(
+                "Impossible de supprimer un client qui a deja des commandes",
+                ErrorCodes.CLIENT_ALREADY_IN_USE
+            );
         }
 
         clientRepository.deleteById(id);
