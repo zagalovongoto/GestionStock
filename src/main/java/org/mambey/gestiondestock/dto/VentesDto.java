@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 
 import org.mambey.gestiondestock.model.Ventes;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -28,6 +30,7 @@ public class VentesDto {
     private Integer idEntreprise;
 
     @NotNull(message = "Veuillez renseigner les lignes de vente")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<LigneVenteDto> ligneVentes;
 
     public static VentesDto fromEntity(Ventes ventes){

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import org.mambey.gestiondestock.model.LigneCommandeClient;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,6 +17,7 @@ public class LigneCommandeClientDto {
 
     private ArticleDto article;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private CommandeClientDto commandeClient;
 
     private BigDecimal quantite;

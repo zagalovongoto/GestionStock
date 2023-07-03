@@ -8,13 +8,14 @@ import org.mambey.gestiondestock.dto.FournisseurDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
-import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.exception.InvalidEntityException;
 import org.mambey.gestiondestock.model.CommandeFournisseur;
 import org.mambey.gestiondestock.model.Fournisseur;
 import org.mambey.gestiondestock.repository.CommandeFournisseurRepository;
 import org.mambey.gestiondestock.repository.FournisseurRepository;
 import org.mambey.gestiondestock.services.FournisseurService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -32,11 +33,14 @@ public class FournisseurServiceImpl implements FournisseurService{
     @Override
     public FournisseurDto save(FournisseurDto dto) {
 
+        Integer idEntreprise = Integer.parseInt(MDC.get("idEntreprise"));
+        dto.setIdEntreprise(idEntreprise);
+        
         var violations = fournisseurValidator.validate(dto);
 
         if(!violations.isEmpty()){
             log.error("Le fournisseur n'est pas valide {}", dto);
-            throw new InvaliddEntityException("Données invalides", ErrorCodes.FOURNISSEUR_NOT_VALID, violations);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.FOURNISSEUR_NOT_VALID, violations);
         }
 
         return FournisseurDto.fromEntity(
@@ -73,6 +77,8 @@ public class FournisseurServiceImpl implements FournisseurService{
         if(id == null){
             log.error("Fournisseur ID is null");
         }
+
+        findById(id);
 
         List<CommandeFournisseur> commandeFournisseurs = commandeFournisseurRepository.findAllByFournisseurId(id);
         if(!commandeFournisseurs.isEmpty()){

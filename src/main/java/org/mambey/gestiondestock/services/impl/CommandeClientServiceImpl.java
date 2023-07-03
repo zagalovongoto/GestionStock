@@ -15,7 +15,7 @@ import org.mambey.gestiondestock.dto.MvtStkDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
-import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.exception.InvalidEntityException;
 import org.mambey.gestiondestock.model.Article;
 import org.mambey.gestiondestock.model.Client;
 import org.mambey.gestiondestock.model.CommandeClient;
@@ -30,6 +30,7 @@ import org.mambey.gestiondestock.repository.LigneCommandeClientRepository;
 import org.mambey.gestiondestock.services.CommandeClientService;
 import org.mambey.gestiondestock.services.MvtStkService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -44,19 +45,23 @@ public class CommandeClientServiceImpl implements CommandeClientService{
     private final CommandeClientRepository commandeClientRepository;
     private final ClientRepository clientRepository;
     private final ArticleRepository articleRepository;
-    private LigneCommandeClientRepository ligneCommandeClientRepository;
-    private MvtStkService mvtStkService;
+    private final LigneCommandeClientRepository ligneCommandeClientRepository;
+    private final MvtStkService mvtStkService;
     private final ObjectsValidator<CommandeClientDto> commandeClientValidator;
 
 
     @Override
     public CommandeClientDto save(CommandeClientDto dto) {
         
+        Integer idEntreprise = Integer.parseInt(MDC.get("idEntreprise"));
+        dto.setIdEntreprise(idEntreprise);
+        dto.setDate(Instant.now());
+
         var violations = commandeClientValidator.validate(dto);
 
         if(!violations.isEmpty()){
             log.error("La commande client n'est pas valide {}", dto);
-            throw new InvaliddEntityException("Données invalides", ErrorCodes.COMMANDE_CLIENT_NOT_VALID, violations);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.COMMANDE_CLIENT_NOT_VALID, violations);
         }
 
         if(dto.getId() != null && dto.isCommandeLivree()){
@@ -90,7 +95,7 @@ public class CommandeClientServiceImpl implements CommandeClientService{
 
         if(!articleErrors.isEmpty()){
             log.warn("Article n'existepas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND);
-            throw new InvaliddEntityException("Article n'existe pas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND, articleErrors);
+            throw new InvalidEntityException("Article n'existe pas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND, articleErrors);
         }
 
         CommandeClient savedCmdClt = commandeClientRepository.save(CommandeClientDto.toEntity(dto));
@@ -99,16 +104,17 @@ public class CommandeClientServiceImpl implements CommandeClientService{
             dto.getLigneCommandeClients().forEach(ligneCmdCltDto -> {
                 LigneCommandeClient ligneCmdClt = LigneCommandeClientDto.toEntity(ligneCmdCltDto);
                 ligneCmdClt.setCommandeClient(savedCmdClt);
+                ligneCmdClt.setIdEntreprise(idEntreprise);
                 ligneCommandeClientRepository.save(ligneCmdClt);
             });
         }
 
         return CommandeClientDto.fromEntity(savedCmdClt);
-        
     }
 
     @Override
     public CommandeClientDto findById(Integer id) {
+
         if(id == null){
             log.error("CommandeClient ID is null");
             return null;
@@ -120,6 +126,28 @@ public class CommandeClientServiceImpl implements CommandeClientService{
                       .orElseThrow(() -> new EntityNotFoundException(
                         "Aucune commande client avec l'ID " + id + " n'a été trouvé dans la BDD", 
                         ErrorCodes.COMMANDE_CLIENT_NOT_FOUND));
+
+        /* if(id == null){
+            log.error("CommandeClient ID is null");
+            return null;
+        }
+
+        Optional<CommandeClient> commandeClient = commandeClientRepository.findById(id);
+        List<LigneCommandeClientDto> ligneCommandeClients;
+        if(commandeClient.isPresent()){
+            ligneCommandeClients = ligneCommandeClientRepository.findAllByCommandeClientId(id).stream()
+                .map(LigneCommandeClientDto::fromEntity)
+                .collect(Collectors.toList());
+
+        }else{
+            throw new EntityNotFoundException(
+                        "Aucune commande client avec l'ID " + id + " n'a été trouvé dans la BDD", 
+                        ErrorCodes.COMMANDE_CLIENT_NOT_FOUND);
+        }
+
+        CommandeClientDto cmdClt = CommandeClientDto.fromEntity(commandeClient.get());
+        cmdClt.setLigneCommandeClients(ligneCommandeClients);
+        return cmdClt; */
     }
 
     @Override
@@ -155,6 +183,7 @@ public class CommandeClientServiceImpl implements CommandeClientService{
 
         List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findAllByCommandeClientId(id);
         if(!ligneCommandeClients.isEmpty()){
+            log.warn("Suppression d'une commande rattachée à des lignes de commande");
             throw new InvalidOperationException(
                 "Impossible de supprimer une commande client deja utilisé",
                 ErrorCodes.COMMANDE_CLIENT_ALREADY_IN_USE

@@ -9,8 +9,7 @@ import javax.validation.constraints.NotNull;
 import org.mambey.gestiondestock.model.CommandeFournisseur;
 import org.mambey.gestiondestock.model.EtatCommande;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +24,6 @@ public class CommandeFournisseurDto {
     private String code;
 
     @NotNull(message = "Veuillez renseigner la date de commande")
-    @JsonFormat( shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Instant dateCommande;
 
     @NotNull(message = "Veuillez renseigner l'état de la commande")
@@ -33,7 +31,7 @@ public class CommandeFournisseurDto {
 
     private FournisseurDto fournisseur;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<LigneCommandeFournisseurDto> ligneCommandeFournisseurs;
 
     private Integer idEntreprise;
@@ -66,6 +64,7 @@ public class CommandeFournisseurDto {
         commandeFournisseur.setCode(commandeFournisseurDto.getCode());
         commandeFournisseur.setDateCommande(commandeFournisseurDto.getDateCommande());
         commandeFournisseur.setEtatCommade(commandeFournisseurDto.getEtatCommade());
+        commandeFournisseur.setFournisseur(FournisseurDto.toEntity(commandeFournisseurDto.getFournisseur()));
         commandeFournisseur.setIdEntreprise(commandeFournisseurDto.getIdEntreprise());
         
         return commandeFournisseur;

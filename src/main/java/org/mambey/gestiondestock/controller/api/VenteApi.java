@@ -17,7 +17,7 @@ public interface VenteApi {
     
     @PostMapping(value= "/create")
     @ResponseStatus(HttpStatus.CREATED)
-    VentesDto save(VentesDto dto);
+    VentesDto save(@org.springframework.web.bind.annotation.RequestBody VentesDto dto);
 
     @GetMapping(value = "/{idVente}")
     VentesDto findById(@PathVariable("idVente") Integer id);

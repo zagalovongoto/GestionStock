@@ -15,7 +15,7 @@ import org.mambey.gestiondestock.dto.MvtStkDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
-import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.exception.InvalidEntityException;
 import org.mambey.gestiondestock.model.Article;
 import org.mambey.gestiondestock.model.CommandeFournisseur;
 import org.mambey.gestiondestock.model.EtatCommande;
@@ -30,6 +30,7 @@ import org.mambey.gestiondestock.repository.LigneCommandeFournisseurRepository;
 import org.mambey.gestiondestock.services.CommandeFournisseurService;
 import org.mambey.gestiondestock.services.MvtStkService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -44,8 +45,8 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
     private final CommandeFournisseurRepository commandeFournisseurRepository;
     private final FournisseurRepository fournisseurRepository;
     private final ArticleRepository articleRepository;
-    private MvtStkService mvtStkService;
-    private LigneCommandeFournisseurRepository ligneCommandeFournisseurRepository;
+    private final MvtStkService mvtStkService;
+    private final LigneCommandeFournisseurRepository ligneCommandeFournisseurRepository;
 
     private final ObjectsValidator<CommandeFournisseurDto> commandeFournisseurValidator;
 
@@ -53,11 +54,15 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
     @Override
     public CommandeFournisseurDto save(CommandeFournisseurDto dto) {
         
+        Integer idEntreprise = Integer.parseInt(MDC.get("idEntreprise"));
+        dto.setIdEntreprise(idEntreprise);
+        dto.setDateCommande(Instant.now());
+
         var violations = commandeFournisseurValidator.validate(dto);
 
         if(!violations.isEmpty()){
             log.error("La commande fournisseur n'est pas valide {}", dto);
-            throw new InvaliddEntityException("Données invalides", ErrorCodes.COMMANDE_FOURNISSEUR_NOT_VALID, violations);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.COMMANDE_FOURNISSEUR_NOT_VALID, violations);
         }
 
         //On vérifie que le fournisseur existe bien dans la BDD
@@ -84,7 +89,7 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
 
         if(!articleErrors.isEmpty()){
             log.warn("Article n'existe pas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND);
-            throw new InvaliddEntityException("Article n'existe pas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND, articleErrors);
+            throw new InvalidEntityException("Article n'existe pas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND, articleErrors);
         }
 
         CommandeFournisseur savedCmdFrn = commandeFournisseurRepository.save(CommandeFournisseurDto.toEntity(dto));
@@ -93,6 +98,7 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
             dto.getLigneCommandeFournisseurs().forEach(ligneCmdFrnDto -> {
                 LigneCommandeFournisseur ligneCmdFrn = LigneCommandeFournisseurDto.toEntity(ligneCmdFrnDto);
                 ligneCmdFrn.setCommandeFournisseur(savedCmdFrn);
+                ligneCmdFrn.setIdEntreprise(idEntreprise);
                 ligneCommandeFournisseurRepository.save(ligneCmdFrn);
             });
         }

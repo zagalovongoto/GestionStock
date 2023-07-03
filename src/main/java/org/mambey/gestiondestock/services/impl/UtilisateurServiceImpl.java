@@ -12,7 +12,7 @@ import org.mambey.gestiondestock.exception.EntityAlreadyExistsException;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
-import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.exception.InvalidEntityException;
 import org.mambey.gestiondestock.model.Roles;
 import org.mambey.gestiondestock.model.Utilisateur;
 import org.mambey.gestiondestock.repository.RolesRepository;
@@ -45,7 +45,7 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 
         if(!violations.isEmpty()){
             log.error("L'utilisateur n'est pas valide {}", dto);
-            throw new InvaliddEntityException("Données invalides", ErrorCodes.UTILISATEUR_NOT_VALID, violations);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.UTILISATEUR_NOT_VALID, violations);
         }
         // On vérifie l'existence des différents roles renseignés
         if (utilisateurRepository.existsByEmail(dto.getEmail())) {
@@ -169,7 +169,7 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 
         if(dto == null){
             log.warn("Impossible de modifier le mot de passe avec un objet null");
-            throw new InvaliddEntityException(
+            throw new InvalidEntityException(
                 "Aucune information n'a été fourni pour pouvoir changer le mot de passe." , 
                 ErrorCodes.UTILISATEUR_CHANGE_PASSWORD_OBJECT_NOT_VALID
             );
@@ -177,7 +177,7 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 
         if(dto.getId() == null){
             log.warn("Impossible de modifier le mot de passe avec un ID null");
-            throw new InvaliddEntityException(
+            throw new InvalidEntityException(
                 "ID utilisateur null: impossible de modifier le mot de passe" , 
                 ErrorCodes.UTILISATEUR_CHANGE_PASSWORD_OBJECT_NOT_VALID
             );

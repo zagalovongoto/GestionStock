@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface CommandeClientApi {
     
     @PostMapping(value= "/create")
-    @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<CommandeClientDto> save(@RequestBody CommandeClientDto dto);
 
     @PatchMapping(value= "/update/etat/{etatCommande}/{idCommande}")
@@ -48,7 +47,7 @@ public interface CommandeClientApi {
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<CommandeClientDto> updateClient(@PathVariable("idCommande") Integer idCommande, @PathVariable("idClient") Integer idClient);
 
-    @DeleteMapping(value= "/delete/article/{idCommande}/{idClient}")
+    @DeleteMapping(value= "/delete/article/{idCommande}/{idLigneCommande}")
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<CommandeClientDto> deleteArticle(@PathVariable("idCommande") Integer idCommande, @PathVariable("idLigneCommande") Integer idLigneCommande);
 

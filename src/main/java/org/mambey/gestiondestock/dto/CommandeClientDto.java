@@ -9,8 +9,7 @@ import javax.validation.constraints.NotNull;
 import org.mambey.gestiondestock.model.CommandeClient;
 import org.mambey.gestiondestock.model.EtatCommande;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +24,7 @@ public class CommandeClientDto {
     private String code;
 
     @NotNull(message = "Veuillez renseigner la date de commande")
-    @JsonFormat( shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    //@JsonFormat( shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Instant date;
 
     @NotNull(message = "Veuillez renseigner l'état de la commande")
@@ -34,7 +33,7 @@ public class CommandeClientDto {
     @NotNull(message = "Veuillez renseigner le client")
     private ClientDto client;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<LigneCommandeClientDto> ligneCommandeClients;
 
     private Integer idEntreprise;
@@ -44,7 +43,7 @@ public class CommandeClientDto {
         if(commandeClient == null){
             return null;
         }
-
+        //System.out.println((ClientDto.fromEntity(commandeClient.getClient())).toString());
         return CommandeClientDto.builder()
             .id(commandeClient.getId())
             .code(commandeClient.getCode())
@@ -67,6 +66,7 @@ public class CommandeClientDto {
         commandeClient.setCode(commandeClientDto.getCode());
         commandeClient.setDate(commandeClientDto.getDate());
         commandeClient.setEtatCommade(commandeClientDto.getEtatCommade());
+        commandeClient.setClient(ClientDto.toEntity(commandeClientDto.getClient()));
         commandeClient.setIdEntreprise(commandeClientDto.getIdEntreprise());
         
         return commandeClient;

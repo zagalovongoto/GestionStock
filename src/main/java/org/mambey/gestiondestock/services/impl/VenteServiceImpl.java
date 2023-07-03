@@ -12,7 +12,7 @@ import org.mambey.gestiondestock.dto.VentesDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
-import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.exception.InvalidEntityException;
 import org.mambey.gestiondestock.model.Article;
 import org.mambey.gestiondestock.model.LigneVente;
 import org.mambey.gestiondestock.model.SourceMvtStk;
@@ -24,6 +24,7 @@ import org.mambey.gestiondestock.repository.VenteRepository;
 import org.mambey.gestiondestock.services.MvtStkService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
 import org.mambey.gestiondestock.services.VenteService;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -38,16 +39,23 @@ public class VenteServiceImpl implements VenteService{
     private final VenteRepository venteRepository;
     private final ArticleRepository articleRepository;
     private final LigneVenteRepository ligneVenteRepository;
-    private MvtStkService mvtStkService;
+    private final MvtStkService mvtStkService;
     private final ObjectsValidator<VentesDto> ventesValidator;
 
     @Override
     public VentesDto save(VentesDto dto) {
         
+        Integer idEntreprise = Integer.parseInt(MDC.get("idEntreprise"));
+        dto.setIdEntreprise(idEntreprise);
+        dto.setDateVente(Instant.now());
+
+        System.out.println(dto.toString());
+
         var violations = ventesValidator.validate(dto);
+
         if(!violations.isEmpty()){
             log.error("La vente n'est pas valide {}", dto);
-            throw new InvaliddEntityException("Données invalides", ErrorCodes.VENTE_NOT_VALID, violations);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.VENTE_NOT_VALID, violations);
         }
 
         List<String> articleErrors = new ArrayList<>();
@@ -60,7 +68,7 @@ public class VenteServiceImpl implements VenteService{
 
         if(!articleErrors.isEmpty()){
             log.error("One or more articles were not found in the DB, {}", articleErrors);
-            throw new InvaliddEntityException("Un ou plusieurs articles 'ont pas été trouvés dans la BD", ErrorCodes.VENTE_NOT_VALID, articleErrors);
+            throw new InvalidEntityException("Un ou plusieurs articles 'ont pas été trouvés dans la BD", ErrorCodes.VENTE_NOT_VALID, articleErrors);
         }
 
         Ventes savedVentes = venteRepository.save(VentesDto.toEntity(dto));
@@ -68,6 +76,7 @@ public class VenteServiceImpl implements VenteService{
         dto.getLigneVentes().forEach(ligneVenteDto -> {
             LigneVente lignVente = LigneVenteDto.toEntity(ligneVenteDto);
             lignVente.setVente(savedVentes);
+            lignVente.setIdEntreprise(idEntreprise);
             ligneVenteRepository.save(lignVente);
             updateMvtStk(lignVente);
         });
@@ -118,6 +127,8 @@ public class VenteServiceImpl implements VenteService{
         if(id == null){
             log.error("Vente ID is null");
         }
+
+        findById(id);
 
         List<LigneVente> ligneVentes = ligneVenteRepository.findAllByVenteId(id);
         if(!ligneVentes.isEmpty()){

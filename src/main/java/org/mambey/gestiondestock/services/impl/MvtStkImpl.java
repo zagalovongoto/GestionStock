@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.mambey.gestiondestock.dto.MvtStkDto;
 import org.mambey.gestiondestock.exception.ErrorCodes;
-import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.exception.InvalidEntityException;
 import org.mambey.gestiondestock.model.TypeMvtStk;
 import org.mambey.gestiondestock.repository.MvtStkRepository;
 import org.mambey.gestiondestock.services.ArticleService;
@@ -50,7 +50,7 @@ public class MvtStkImpl implements MvtStkService{
 
         if(!violations.isEmpty()){
             log.error("Article is not valid {}", dto);
-            throw new InvaliddEntityException("Données invalides", ErrorCodes.MVT_STK_NOT_VALID, violations);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.MVT_STK_NOT_VALID, violations);
         }
 
         dto.setQuantite(
@@ -71,7 +71,7 @@ public class MvtStkImpl implements MvtStkService{
 
         if(!violations.isEmpty()){
             log.error("Article is not valid {}", dto);
-            throw new InvaliddEntityException("Données invalides", ErrorCodes.MVT_STK_NOT_VALID, violations);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.MVT_STK_NOT_VALID, violations);
         }
 
         dto.setQuantite(
@@ -92,7 +92,7 @@ public class MvtStkImpl implements MvtStkService{
 
         if(!violations.isEmpty()){
             log.error("Article is not valid {}", dto);
-            throw new InvaliddEntityException("Données invalides", ErrorCodes.MVT_STK_NOT_VALID, violations);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.MVT_STK_NOT_VALID, violations);
         }
 
         dto.setQuantite(
@@ -113,7 +113,7 @@ public class MvtStkImpl implements MvtStkService{
 
         if(!violations.isEmpty()){
             log.error("Article is not valid {}", dto);
-            throw new InvaliddEntityException("Données invalides", ErrorCodes.MVT_STK_NOT_VALID, violations);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.MVT_STK_NOT_VALID, violations);
         }
 
         dto.setQuantite(

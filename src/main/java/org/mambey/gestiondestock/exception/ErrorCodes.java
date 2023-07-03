@@ -40,7 +40,8 @@ public enum ErrorCodes {
     ROLE_NOT_VALID(14001),
     //Liste des erreurs techniques
     UPDATE_PHOTO_EXCEPTION(15000),
-    UNKNOWN_CONTEXT(15001)
+    UNKNOWN_CONTEXT(15001),
+    INVALID_DATA(100000)
     ;
 
     private int code;

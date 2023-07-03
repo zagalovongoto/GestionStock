@@ -11,7 +11,7 @@ import org.mambey.gestiondestock.dto.LigneVenteDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
-import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.exception.InvalidEntityException;
 import org.mambey.gestiondestock.model.Article;
 import org.mambey.gestiondestock.model.LigneCommandeClient;
 import org.mambey.gestiondestock.model.LigneCommandeFournisseur;
@@ -22,6 +22,7 @@ import org.mambey.gestiondestock.repository.LigneCommandeFournisseurRepository;
 import org.mambey.gestiondestock.repository.LigneVenteRepository;
 import org.mambey.gestiondestock.services.ArticleService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -43,11 +44,14 @@ public class ArticleServiceImpl implements ArticleService{
     @Override
     public ArticleDto save(ArticleDto dto) {
 
+        Integer idEntreprise = Integer.parseInt(MDC.get("idEntreprise"));
+        dto.setIdEntreprise(idEntreprise);
+
         var violations = articleValidator.validate(dto);
 
         if(!violations.isEmpty()){
             log.error("L'article n'est pas valide {}", dto);
-            throw new InvaliddEntityException("Données invalides", ErrorCodes.ARTICLE_NOT_VALID, violations);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.ARTICLE_NOT_VALID, violations);
         }
 
         return ArticleDto.fromEntity(
@@ -74,6 +78,7 @@ public class ArticleServiceImpl implements ArticleService{
 
     @Override
     public ArticleDto findByCodeArticle(String codeArticle) {
+
         if(!StringUtils.hasLength(codeArticle)){
             log.error("Article CODE is null");
             return null;
@@ -128,9 +133,12 @@ public class ArticleServiceImpl implements ArticleService{
 
     @Override
     public void delete(Integer id) {
+
         if(id == null){
             log.error("Article ID is null");
         }
+
+        findById(id);
 
         List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findAllByArticleId(id);
         if(!ligneCommandeClients.isEmpty()){

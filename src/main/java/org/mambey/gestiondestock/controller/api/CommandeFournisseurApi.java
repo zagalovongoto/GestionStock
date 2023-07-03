@@ -44,11 +44,11 @@ public interface CommandeFournisseurApi {
         @PathVariable("idLigneCommande") Integer idLigneCommande, 
         @PathVariable("idArticle") Integer idArticle);
 
-    @PatchMapping(value= "/update/client/{idCommande}/{idClient}")
+    @PatchMapping(value= "/update/fournisseur/{idCommande}/{idFournisseur}")
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<CommandeFournisseurDto> updateFournisseur(@PathVariable("idCommande") Integer idCommande, @PathVariable("idFournisseur") Integer idFournisseur);
 
-    @DeleteMapping(value= "/delete/article/{idCommande}/{idClient}")
+    @DeleteMapping(value= "/delete/article/{idCommande}/{idLigneCommande}")
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<CommandeFournisseurDto> deleteArticle(@PathVariable("idCommande") Integer idCommande, @PathVariable("idLigneCommande") Integer idLigneCommande);
 

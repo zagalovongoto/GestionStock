@@ -43,6 +43,7 @@ public class ClientDto {
     private Integer idEntreprise;
 
     public static ClientDto fromEntity(Client client){
+        
         if(client == null){
             return null;
         }
@@ -70,7 +71,7 @@ public class ClientDto {
         client.setPrenom(clientDto.getPrenom());
         client.setAdresse(AdresseDto.toEntity(clientDto.getAdresse()));
         client.setPhoto(clientDto.getPhoto());
-        clientDto.setMail(client.getMail());
+        client.setMail(clientDto.getMail());
         client.setNumTel(clientDto.getNumTel());
         client.setIdEntreprise(clientDto.getIdEntreprise());
 

@@ -2,8 +2,11 @@ package org.mambey.gestiondestock.handlers;
 
 import org.mambey.gestiondestock.exception.EntityAlreadyExistsException;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
+import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
-import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.exception.InvalidEntityException;
+import org.springframework.beans.TypeMismatchException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,8 +30,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
             return new ResponseEntity<>(errorDto, notFound);
     }
 
-    @ExceptionHandler(InvaliddEntityException.class)
-    public ResponseEntity<ErrorDto> handleExcEntity(InvaliddEntityException exception, WebRequest webRequest){
+    @ExceptionHandler(InvalidEntityException.class)
+    public ResponseEntity<ErrorDto> handleExcEntity(InvalidEntityException exception, WebRequest webRequest){
 
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
@@ -70,5 +73,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 
             return new ResponseEntity<>(errorDto, badRequest);
     }
+
+    //ON fait une redéfinition de la méthode ci-dessous pour pouvoir gérer les erreurs de type lors de la désériaisation
+    @Override
+    protected ResponseEntity<Object> handleTypeMismatch(
+			TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        final ErrorDto errorDto = ErrorDto.builder()
+            .code(ErrorCodes.INVALID_DATA)
+            .httpCode(status.value())
+            //.message(ex.getMessage())
+            .message("Type de données invalide")
+            .build();
+		return handleExceptionInternal(ex, errorDto, headers, status, request);
+	}
 
 }

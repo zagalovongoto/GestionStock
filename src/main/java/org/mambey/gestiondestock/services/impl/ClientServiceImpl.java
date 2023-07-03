@@ -8,13 +8,14 @@ import org.mambey.gestiondestock.dto.ClientDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
-import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.exception.InvalidEntityException;
 import org.mambey.gestiondestock.model.Client;
 import org.mambey.gestiondestock.model.CommandeClient;
 import org.mambey.gestiondestock.repository.ClientRepository;
 import org.mambey.gestiondestock.repository.CommandeClientRepository;
 import org.mambey.gestiondestock.services.ClientService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -32,11 +33,14 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public ClientDto save(ClientDto dto) {
 
+        Integer idEntreprise = Integer.parseInt(MDC.get("idEntreprise"));
+        dto.setIdEntreprise(idEntreprise);
+
         var violations = clienValidator.validate(dto);
 
         if(!violations.isEmpty()){
             log.error("Le client n'est pas valide {}", dto);
-            throw new InvaliddEntityException("Données invalides", ErrorCodes.CLIENT_NOT_VALID, violations);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.CLIENT_NOT_VALID, violations);
         }
 
         return ClientDto.fromEntity(
@@ -74,8 +78,11 @@ public class ClientServiceImpl implements ClientService{
             log.error("Client ID is null");
         }
 
+        findById(id);
+
         List<CommandeClient> commandeClients = commandeClientRepository.findAllByClientId(id);
         if(!commandeClients.isEmpty()){
+            log.warn("Suppression d'un client lié à des commandes");
             throw new InvalidOperationException(
                 "Impossible de supprimer un client qui a deja des commandes",
                 ErrorCodes.CLIENT_ALREADY_IN_USE

@@ -8,7 +8,7 @@ import org.mambey.gestiondestock.dto.CategoryDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
-import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.exception.InvalidEntityException;
 import org.mambey.gestiondestock.model.Article;
 import org.mambey.gestiondestock.model.Category;
 import org.mambey.gestiondestock.repository.ArticleRepository;
@@ -33,11 +33,14 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public CategoryDto save(CategoryDto dto) {
         
+        Integer idEntreprise = Integer.parseInt(MDC.get("idEntreprise"));
+        dto.setIdEntreprise(idEntreprise);
+
         var violations = categoryValidator.validate(dto);
 
         if(!violations.isEmpty()){
             log.error("La categorie n'est pas valide {}", dto);
-            throw new InvaliddEntityException("Categorie invalide", ErrorCodes.CATEGORY_NOT_VALID, violations);
+            throw new InvalidEntityException("Categorie invalide", ErrorCodes.CATEGORY_NOT_VALID, violations);
         }
 
         dto.setIdEntreprise(Integer.parseInt(MDC.get("idEntreprise")));
@@ -73,8 +76,11 @@ public class CategoryServiceImpl implements CategoryService{
     public void delete(Integer id) {
         if(id == null){
             log.error("Category ID is null");
+            return;
         }
 
+        findById(id);
+        
         List<Article> articles = articleRepository.findAllByCategoryId(id);
         if(!articles.isEmpty()){
             throw new InvalidOperationException(

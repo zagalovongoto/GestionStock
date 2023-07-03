@@ -11,7 +11,7 @@ import org.mambey.gestiondestock.dto.EntrepriseDto;
 import org.mambey.gestiondestock.dto.UtilisateurDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
-import org.mambey.gestiondestock.exception.InvaliddEntityException;
+import org.mambey.gestiondestock.exception.InvalidEntityException;
 import org.mambey.gestiondestock.model.Entreprise;
 import org.mambey.gestiondestock.model.Roles;
 import org.mambey.gestiondestock.model.Utilisateur;
@@ -46,7 +46,7 @@ public class EntrepriseServiceImpl implements EntrepriseService{
 
         if(!violations.isEmpty()){
             log.error("L'entreprise n'est pas valide {}", dto);
-            throw new InvaliddEntityException("Données invalides", ErrorCodes.ENTREPRISE_NOT_VALID, violations);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.ENTREPRISE_NOT_VALID, violations);
         }
 
 
