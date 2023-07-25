@@ -31,6 +31,9 @@ import org.mambey.gestiondestock.services.CommandeClientService;
 import org.mambey.gestiondestock.services.MvtStkService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
 import org.slf4j.MDC;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -405,5 +408,14 @@ public class CommandeClientServiceImpl implements CommandeClientService{
             mvtStkService.sortieStock(sortieStock);
         });
         
+    }
+
+    @Override
+    public Page<CommandeClientDto> findAllByPage(int page, int size) {
+
+        Pageable mypage = PageRequest.of(page, size);
+
+        return commandeClientRepository.findAll(mypage)
+            .map(CommandeClientDto::fromEntity);
     }
 }

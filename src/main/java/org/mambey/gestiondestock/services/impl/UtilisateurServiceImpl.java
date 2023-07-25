@@ -129,6 +129,8 @@ public class UtilisateurServiceImpl implements UtilisateurService{
             log.error("Fournisseur ID is null");
         }
 
+        findById(id);
+
         utilisateurRepository.deleteById(id);
     }
 

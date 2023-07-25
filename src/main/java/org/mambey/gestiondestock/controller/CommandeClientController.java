@@ -7,6 +7,7 @@ import org.mambey.gestiondestock.controller.api.CommandeClientApi;
 import org.mambey.gestiondestock.dto.CommandeClientDto;
 import org.mambey.gestiondestock.model.EtatCommande;
 import org.mambey.gestiondestock.services.CommandeClientService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -79,6 +80,14 @@ public class CommandeClientController implements CommandeClientApi{
     public ResponseEntity<Void> delete(Integer id) {
         commandeClientService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<List<CommandeClientDto>> findAllByPage(int page, int size) {
+
+        Page<CommandeClientDto> mapage = commandeClientService.findAllByPage(page, size);
+        
+        return ResponseEntity.ok(mapage.getContent());
     }
 
 }

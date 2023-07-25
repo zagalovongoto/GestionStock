@@ -30,7 +30,7 @@ public interface UtilisateurApi {
     @GetMapping(value= "/all")
     List<UtilisateurDto> findAll();
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @DeleteMapping(value= "/delete/{idUtilisateur}")
     void delete(@PathVariable("idUtilisateur") Integer id);
 }

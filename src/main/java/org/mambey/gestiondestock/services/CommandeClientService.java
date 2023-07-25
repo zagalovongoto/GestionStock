@@ -6,6 +6,7 @@ import java.util.List;
 import org.mambey.gestiondestock.dto.CommandeClientDto;
 import org.mambey.gestiondestock.dto.LigneCommandeClientDto;
 import org.mambey.gestiondestock.model.EtatCommande;
+import org.springframework.data.domain.Page;
 
 public interface CommandeClientService {
     
@@ -27,6 +28,8 @@ public interface CommandeClientService {
     CommandeClientDto findByCode(String code);
 
     List<CommandeClientDto> findAll();
+
+    Page<CommandeClientDto> findAllByPage(int page, int size);
 
     List<LigneCommandeClientDto> findAllLignesCommandesClientByCommandeClientId(Integer idCommande);
 

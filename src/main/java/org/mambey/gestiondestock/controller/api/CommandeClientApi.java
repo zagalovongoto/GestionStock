@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping(value = APP_ROOT + "/commandeclients")
@@ -59,6 +60,9 @@ public interface CommandeClientApi {
 
     @GetMapping(value= "/all")
     ResponseEntity<List<CommandeClientDto>> findAll();
+
+    @GetMapping(value= "/page")
+    ResponseEntity<List<CommandeClientDto>> findAllByPage(@RequestParam("page") int page, @RequestParam("size") int size);
 
     @DeleteMapping(value= "/delete/{idCommandeClient}")
     ResponseEntity<Void> delete(@PathVariable("idCommandeClient") Integer id);
