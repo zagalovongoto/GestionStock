@@ -14,6 +14,7 @@ import org.mambey.gestiondestock.security.model.ExtendedUser;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -72,6 +73,9 @@ public class JwtUtils {
     try {
       Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
       return true;
+      
+    } catch (SignatureException e) {
+      logger.error("Invalid JWT token: {}", e.getMessage());
     } catch (MalformedJwtException e) {
       logger.error("Invalid JWT token: {}", e.getMessage());
     } catch (ExpiredJwtException e) {
