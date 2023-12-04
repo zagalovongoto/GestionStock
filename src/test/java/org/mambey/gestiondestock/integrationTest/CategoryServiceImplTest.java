@@ -1,41 +1,31 @@
-package org.mambey.gestiondestock.services.impl;
+package org.mambey.gestiondestock.integrationTest;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+//import org.junit.jupiter.api.Test;
 import org.mambey.gestiondestock.dto.CategoryDto;
-import org.mambey.gestiondestock.model.Category;
-import org.mambey.gestiondestock.repository.ArticleRepository;
-import org.mambey.gestiondestock.repository.CategoryRepository;
 import org.mambey.gestiondestock.services.CategoryService;
-import org.mambey.gestiondestock.services.ObjectsValidator;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class CategoryServiceImplTest {
 
-    @Mock CategoryRepository categoryRepository;
-    @Mock ArticleRepository articleRepository;
+    @Autowired
     CategoryService categoryService;
 
     @BeforeEach
     public void setIdEntreprise(){
         MDC.put("idEntreprise", "1");
-        ObjectsValidator<CategoryDto> categoryValidator = new ObjectsValidator<CategoryDto>();
-        CategoryService categoryService = new CategoryServiceImpl(categoryRepository, articleRepository, categoryValidator);
-        this.categoryService = categoryService;
     }
 
     @Test
     public void shoulSaveCategoruWithSuccess() {
 
-        //Given
         CategoryDto expectedCategory = CategoryDto.builder()
             
             .code("Cat test")
@@ -43,17 +33,20 @@ public class CategoryServiceImplTest {
             .idEntreprise(1)
             .build();
 
-        Category category = CategoryDto.toEntity(expectedCategory);
-        Mockito.when(categoryRepository.save(category)).thenReturn(category);
-
-        //When
         CategoryDto savedCategory = categoryService.save(expectedCategory);
 
-        //Then
         assertNotNull(savedCategory);
+        assertNotNull(savedCategory.getId());
         Assertions.assertEquals(expectedCategory.getCode(), savedCategory.getCode());
         Assertions.assertEquals(expectedCategory.getDesignation(), savedCategory.getDesignation());
         Assertions.assertEquals(expectedCategory.getIdEntreprise(), savedCategory.getIdEntreprise());
         
     }
 }
+
+
+
+
+
+
+

@@ -45,4 +45,6 @@ public class Article extends AbstractEntity{
 
     @Column(name = "identreprise")
     private Integer idEntreprise;
+    
+    
 }

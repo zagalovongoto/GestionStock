@@ -1,0 +1,2 @@
+insert into category (creation_date, last_modified_date, code, designation, identreprise) 
+values ('2023-12-01 00:00:00', '2023-12-01 00:00:00', 'CAT010', 'LEGUMUNEUSE', 1)

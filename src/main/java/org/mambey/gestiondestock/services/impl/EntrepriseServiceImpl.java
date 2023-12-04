@@ -21,6 +21,7 @@ import org.mambey.gestiondestock.repository.UtilisateurRepository;
 import org.mambey.gestiondestock.security.model.ERole;
 import org.mambey.gestiondestock.services.EntrepriseService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,9 @@ public class EntrepriseServiceImpl implements EntrepriseService{
 
     private final ObjectsValidator<EntrepriseDto> entrepriseValidator;
 
+    @Value("${defaultUserPassword}")
+    private String defaultPassword;
+
     @Override
     public EntrepriseDto save(EntrepriseDto dto) {
 
@@ -55,9 +59,9 @@ public class EntrepriseServiceImpl implements EntrepriseService{
         );
 
         UtilisateurDto utilisateurDto = fromEntreprise(savedEntreprise);
-        Roles userRole = rolesRepository.findByRoleName(ERole.ROLE_ADMIN.name())
+        Roles userRole = rolesRepository.findByRoleName(ERole.ROLE_ADMIN)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Aucun role avec le nom " + ERole.ROLE_ADMIN.name() + " n'a été trouvé dans la BDD", 
+                        "Aucun role avec le nom " + ERole.ROLE_ADMIN + " n'a été trouvé dans la BDD", 
                         ErrorCodes.ROLE_NOT_FOUND));
         Set<Roles> roles = new HashSet<>();
         roles.add(userRole);
@@ -82,7 +86,7 @@ public class EntrepriseServiceImpl implements EntrepriseService{
         return entreprise.map(EntrepriseDto::fromEntity)
                       .orElseThrow(() -> new EntityNotFoundException(
                         "Aucune entreprise avec l'ID " + id + " n'a été trouvée dans la BDD", 
-                        ErrorCodes.ENTREPRISE_NOT_VALID));
+                        ErrorCodes.ENTREPRISE_NOT_FOUND));
 
     }
 
@@ -109,16 +113,17 @@ public class EntrepriseServiceImpl implements EntrepriseService{
             .nom(dto.getNom())
             .prenom(dto.getCodeFiscal())
             .email(dto.getEmail())
-            .motDePasse(encoder.encode(generateRandomPassword()))
+            .motDePasse(encoder.encode(defaultPassword))
             .entreprise(dto)
             .dateNaissance(Instant.now())
             .photo(dto.getPhoto())
+            .entreprise(dto)
             .build();
 
     }
 
-    private String generateRandomPassword(){
+    /* private String generateRandomPassword(){
         return "Zagzagzag";
-    }
+    } */
 
 }

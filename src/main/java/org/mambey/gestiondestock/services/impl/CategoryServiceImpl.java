@@ -33,8 +33,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public CategoryDto save(CategoryDto dto) {
         
-        Integer idEntreprise = Integer.parseInt(MDC.get("idEntreprise"));
-        dto.setIdEntreprise(idEntreprise);
+        dto.setIdEntreprise(Integer.parseInt(MDC.get("idEntreprise")));
 
         var violations = categoryValidator.validate(dto);
 
@@ -42,8 +41,6 @@ public class CategoryServiceImpl implements CategoryService{
             log.error("La categorie n'est pas valide {}", dto);
             throw new InvalidEntityException("Categorie invalide", ErrorCodes.CATEGORY_NOT_VALID, violations);
         }
-
-        dto.setIdEntreprise(Integer.parseInt(MDC.get("idEntreprise")));
 
         return CategoryDto.fromEntity(
             categoryRepository.save(CategoryDto.toEntity(dto))

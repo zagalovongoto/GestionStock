@@ -9,14 +9,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.mambey.gestiondestock.security.model.ExtendedUser;
+//import org.mambey.gestiondestock.security.model.ExtendedUser;
+import org.mambey.gestiondestock.security.model.UserDetailsImpl;
 import org.mambey.gestiondestock.security.payload.request.LoginRequest;
 import org.mambey.gestiondestock.security.payload.response.LoginResponse;
 import org.mambey.gestiondestock.security.jwt.JwtUtils;
@@ -30,9 +30,6 @@ public class AuthController {
   AuthenticationManager authenticationManager;
 
   @Autowired
-  PasswordEncoder encoder;
-
-  @Autowired
   JwtUtils jwtUtils;
 
   @PostMapping("/auth/authenticate")
@@ -43,7 +40,7 @@ public class AuthController {
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    ExtendedUser userDetails = (ExtendedUser) authentication.getPrincipal();
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
     String token = jwtUtils.generateToken(userDetails);
 
@@ -52,6 +49,6 @@ public class AuthController {
         .build();
 
     return ResponseEntity.status(HttpStatus.CREATED)
-                             .body(loginResponse);
+                         .body(loginResponse);
   }
 }

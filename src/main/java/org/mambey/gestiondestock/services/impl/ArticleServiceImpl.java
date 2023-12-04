@@ -8,6 +8,7 @@ import org.mambey.gestiondestock.dto.ArticleDto;
 import org.mambey.gestiondestock.dto.LigneCommandeClientDto;
 import org.mambey.gestiondestock.dto.LigneCommandeFournisseurDto;
 import org.mambey.gestiondestock.dto.LigneVenteDto;
+import org.mambey.gestiondestock.exception.EntityAlreadyExistsException;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
@@ -52,6 +53,12 @@ public class ArticleServiceImpl implements ArticleService{
         if(!violations.isEmpty()){
             log.error("L'article n'est pas valide {}", dto);
             throw new InvalidEntityException("Données invalides", ErrorCodes.ARTICLE_NOT_VALID, violations);
+        }
+
+        // On vérifie l'existence de l'article
+        if (articleRepository.existsByCodeArticle(dto.getCodeArticle())) {
+            log.error("L'article avec le code " + dto.getCodeArticle()+" existe déjà dans la base");
+            throw new EntityAlreadyExistsException("Un article avec ce code existe déjà", ErrorCodes.ARTICLE_ALREADY_IN_USE);
         }
 
         return ArticleDto.fromEntity(
@@ -138,7 +145,7 @@ public class ArticleServiceImpl implements ArticleService{
             log.error("Article ID is null");
         }
 
-        findById(id);
+        //findById(id);
 
         List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findAllByArticleId(id);
         if(!ligneCommandeClients.isEmpty()){

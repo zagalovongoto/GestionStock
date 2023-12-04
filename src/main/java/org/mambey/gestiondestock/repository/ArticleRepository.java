@@ -16,7 +16,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer>{
     List<Article> findAllByCategoryId(Integer idCategory);
 
     //Spring comprend automatiquement
-    Article findByCodeArticleAndDesignation(String code, String designation);
+    Optional<Article> findByCodeArticleAndDesignation(String code, String designation);
 
     //Peut ignorer la casse
     Article findByCodeArticleIgnoreCaseAndDesignationIgnoreCase(String code, String designation);
@@ -32,5 +32,8 @@ public interface ArticleRepository extends JpaRepository<Article, Integer>{
     //Requête Native
     @Query(value = "select * from article where codearticle = :code and designation = :designation", nativeQuery = true)
     List<Article> findByCustumQuery3(@Param("code") String c, @Param("designation") String d);
+
+    //Verifie si un article existe
+    Boolean existsByCodeArticle(String codeArticle);
 
 }

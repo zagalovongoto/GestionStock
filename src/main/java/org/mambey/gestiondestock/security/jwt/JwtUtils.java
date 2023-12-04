@@ -10,7 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.mambey.gestiondestock.security.model.ExtendedUser;
+//import org.mambey.gestiondestock.security.model.ExtendedUser;
+import org.mambey.gestiondestock.security.model.UserDetailsImpl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -72,8 +73,9 @@ public class JwtUtils {
   public boolean validateJwtToken(String authToken) {
     try {
       Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
+      //Jwts.parser().setSigningKey(key()).parseClaimsJws(authToken).getBody();
       return true;
-      
+
     } catch (SignatureException e) {
       logger.error("Invalid JWT token: {}", e.getMessage());
     } catch (MalformedJwtException e) {
@@ -100,7 +102,7 @@ public class JwtUtils {
                .compact();
   }
 
-  public String generateToken(ExtendedUser userPrincipal) {
+  public String generateToken(UserDetailsImpl userPrincipal) {
      
     return Jwts.builder()
                .setSubject(userPrincipal.getUsername())

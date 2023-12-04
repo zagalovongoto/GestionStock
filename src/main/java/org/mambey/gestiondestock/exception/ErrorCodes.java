@@ -38,6 +38,7 @@ public enum ErrorCodes {
     VENTE_ALREADY_IN_USE(13002),
     ROLE_NOT_FOUND(14000),
     ROLE_NOT_VALID(14001),
+    ROLE_ALREADY_EXISTS(14002),
     //Liste des erreurs techniques
     UPDATE_PHOTO_EXCEPTION(15000),
     UNKNOWN_CONTEXT(15001),

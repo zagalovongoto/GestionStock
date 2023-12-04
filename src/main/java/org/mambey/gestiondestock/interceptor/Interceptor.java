@@ -9,9 +9,7 @@ public class Interceptor extends EmptyInterceptor{
     
     @Override
     public String onPrepareStatement(String sql) {
-
         String sqlLower = sql.toLowerCase();
-
         if(StringUtils.hasLength(sql) && sqlLower.startsWith("select")){
             //select utilisateur0_.
             //final String entityName = sql.substring(7, sql.indexOf("."));;

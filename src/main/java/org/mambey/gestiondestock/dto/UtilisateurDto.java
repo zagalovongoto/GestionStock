@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.mambey.gestiondestock.model.Utilisateur;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
@@ -69,7 +68,7 @@ public class UtilisateurDto {
             .roles(
                 utilisateur.getRoles() != null ?
                 utilisateur.getRoles().stream()
-                .map(role -> role.getRoleName())
+                .map(role -> role.getRoleName().name())
                 .collect(Collectors.toSet()) : null
             )
             .build();

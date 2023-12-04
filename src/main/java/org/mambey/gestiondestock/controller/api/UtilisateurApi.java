@@ -19,7 +19,7 @@ public interface UtilisateurApi {
     
     @PostMapping(value= "/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     UtilisateurDto save(@RequestBody UtilisateurDto dto);
 
     @GetMapping(value= "/{idUtilisateur}")

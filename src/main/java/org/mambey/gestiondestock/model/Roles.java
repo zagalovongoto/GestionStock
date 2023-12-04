@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.mambey.gestiondestock.security.model.ERole;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class Roles extends AbstractEntity{
     
     @Column(name = "rolename")
-    private String roleName;
+    private ERole roleName;
 
     @Column(name = "identreprise")
     private Integer idEntreprise;

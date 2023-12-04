@@ -13,7 +13,8 @@ import java.util.List;
 
 import org.mambey.gestiondestock.model.Utilisateur;
 import org.mambey.gestiondestock.repository.UtilisateurRepository;
-import org.mambey.gestiondestock.security.model.ExtendedUser;
+//import org.mambey.gestiondestock.security.model.ExtendedUser;
+import org.mambey.gestiondestock.security.model.UserDetailsImpl;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -27,8 +28,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     Utilisateur user = userRepository.findUtilisateurByEmail(email)
         .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + email));
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getRoleName())));
+        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getRoleName().name())));
 
-    return new ExtendedUser(user.getEmail(), user.getMotDePasse(), user.getEntreprise().getId(), authorities);
+    //return new ExtendedUser(user.getEmail(), user.getMotDePasse(), user.getEntreprise().getId(), authorities);
+
+    return UserDetailsImpl.build(user);
   }
 }

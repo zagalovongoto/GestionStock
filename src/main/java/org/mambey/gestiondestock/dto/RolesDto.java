@@ -1,9 +1,9 @@
 package org.mambey.gestiondestock.dto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import org.mambey.gestiondestock.model.Roles;
+import org.mambey.gestiondestock.security.model.ERole;
 
 import lombok.Builder;
 import lombok.Data;
@@ -15,9 +15,8 @@ public class RolesDto {
     private Integer id;
 
     @NotBlank(message = "Veuillez renseigner le role")
-    private String roleName;
+    private ERole roleName;
 
-    @NotNull
     private UtilisateurDto utilisateur;
 
     private Integer idEntreprise;
