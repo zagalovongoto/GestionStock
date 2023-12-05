@@ -50,6 +50,7 @@ public class GlobalIntegrationTest {
     private final int idEntreprise = 1;
     private final String email = "gimuemoa@gim-uemoa.org";
     @Value("${defaultUserPassword}") private String password;
+    private UtilisateurDto[] userArrays;
 
     private String getBaseUrl(){
         return "http://localhost:" + randomServerPort + "/gestiondestock/v1";
@@ -98,15 +99,17 @@ public class GlobalIntegrationTest {
         JsonNode createTokenResponseJson = new ObjectMapper().readTree(jsonBody);
         String accessToken = createTokenResponseJson.path("accessToken").asText();
         assertThat(accessToken).isNotNull();
+        log.info(accessToken);
 
         //5- On récupère la liste des utilisateurs ********************************
         url = getBaseUrl() + "/utilisateurs/all";
-        headers.set("Authorization", "Bearer "+accessToken+"a");
+        headers.set("Authorization", "Bearer "+accessToken);
         HttpEntity<String> entity = new HttpEntity<String>(headers);
-        ResponseEntity<String> getUsersRequestEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-        jsonBody = getUsersRequestEntity.getBody();
-        JsonNode getUsersResponseJson = new ObjectMapper().readTree(jsonBody);
-        log.info("***************"+getUsersResponseJson.toString());
+        ResponseEntity<UtilisateurDto[]> getUsersRequestEntity = restTemplate.exchange(url, HttpMethod.GET, entity, UtilisateurDto[].class);
+        userArrays = getUsersRequestEntity.getBody();
+        assertThat(userArrays.length).isNotEqualTo(0);
+        assertThat(userArrays[0].getNom()).isEqualTo("GIM-UEMOA");
+        
 
     }
     
