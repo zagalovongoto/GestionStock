@@ -3,9 +3,9 @@ package org.mambey.gestiondestock;
 /* import org.mambey.gestiondestock.dto.AdresseDto;
 import org.mambey.gestiondestock.dto.EntrepriseDto;
 import org.mambey.gestiondestock.dto.RolesDto;
-import org.mambey.gestiondestock.security.model.ERole;  */
+import org.mambey.gestiondestock.security.model.ERole;  
 import org.mambey.gestiondestock.services.EntrepriseService;
-import org.mambey.gestiondestock.services.RolesService;
+import org.mambey.gestiondestock.services.RolesService;*/
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,13 +13,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class GestionDeStockApplication implements CommandLineRunner{
 
-	RolesService rolesService;
+	/* RolesService rolesService;
 	EntrepriseService entrepriseService;
 	
 	public GestionDeStockApplication(RolesService rolesService, EntrepriseService entrepriseService){
 		this.rolesService = rolesService;
 		this.entrepriseService = entrepriseService;
-	}
+	} */
 	public static void main(String[] args) {
 		SpringApplication.run(GestionDeStockApplication.class, args);
 	}
