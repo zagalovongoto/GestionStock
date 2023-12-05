@@ -1,6 +1,6 @@
 package org.mambey.gestiondestock.services.impl;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -115,7 +115,7 @@ public class EntrepriseServiceImpl implements EntrepriseService{
             .email(dto.getEmail())
             .motDePasse(encoder.encode(defaultPassword))
             .entreprise(dto)
-            .dateNaissance(Instant.now())
+            .dateNaissance(LocalDate.now().toString())
             .photo(dto.getPhoto())
             .entreprise(dto)
             .build();

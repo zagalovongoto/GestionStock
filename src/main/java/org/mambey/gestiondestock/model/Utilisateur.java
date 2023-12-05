@@ -1,6 +1,6 @@
 package org.mambey.gestiondestock.model;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,7 +45,7 @@ public class Utilisateur extends AbstractEntity{
     private String email;
 
     @Column(name = "datenaissance")
-    private Instant dateNaissance;
+    private LocalDate dateNaissance;
 
     @Column(name = "motdepasse")
     private String motDePasse;
