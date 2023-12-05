@@ -1,9 +1,9 @@
 package org.mambey.gestiondestock;
 
-import org.mambey.gestiondestock.dto.AdresseDto;
+/* import org.mambey.gestiondestock.dto.AdresseDto;
 import org.mambey.gestiondestock.dto.EntrepriseDto;
 import org.mambey.gestiondestock.dto.RolesDto;
-import org.mambey.gestiondestock.security.model.ERole; 
+import org.mambey.gestiondestock.security.model.ERole;  */
 import org.mambey.gestiondestock.services.EntrepriseService;
 import org.mambey.gestiondestock.services.RolesService;
 import org.springframework.boot.CommandLineRunner;
@@ -27,7 +27,7 @@ public class GestionDeStockApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		
-		RolesDto role1 = RolesDto.builder()
+		/* RolesDto role1 = RolesDto.builder()
                                  .roleName(ERole.ROLE_ADMIN)
                                  .idEntreprise(1)
                             .build();
@@ -60,7 +60,7 @@ public class GestionDeStockApplication implements CommandLineRunner{
 												   .adresse(adresseDto)
 												.build();
 
-		entrepriseService.save(entrepriseDto);
+		entrepriseService.save(entrepriseDto); */
 
 	}
 	
