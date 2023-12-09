@@ -71,7 +71,7 @@ public class WebSecurityConfig {
             "/**/**/entreprises/create",//Créer une entreprise et son user principal
             "/**/**/utilisateurs/create",//ajouter un utilisateur
             "/swagger-ui/**",//swagger-ui/index.html pour générer la documentation
-            "/v3/api-docs**"//renvoie le fichier json ///v3/api-docs.yaml télécharge le fichier yaml
+            "/v3/api-docs**/**"//renvoie le fichier json ///v3/api-docs.yaml télécharge le fichier yaml
           ).permitAll()
               .anyRequest().authenticated()
         );
