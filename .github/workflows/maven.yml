@@ -48,7 +48,7 @@ jobs:
         registry: dockerhub.io
         dockerfile: Dockerfile.ci
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
     # - name: Build docker image
     #   uses: docker/build-push-action@v2
