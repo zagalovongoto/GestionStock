@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  # Spring Boot Application
+  spring-app:
+    image: gestiondestock:latest  # Update with your actual image details
+    ports:
+      - "8080:8881"
+    env_file:
+      - ./gestiondestock-env-file.env  # Path to your combined environment file
+    depends_on:
+      - mysql-db
+
+  # MySQL Database
+  mysql-db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./gestiondestock-env-file.env  # Path to your combined environment file
+
