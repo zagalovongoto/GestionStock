@@ -40,22 +40,32 @@ jobs:
         mvn -B clean
         mvn package --file pom.xml
 
-    - name: Build docker image
-      uses: docker/build-push-action@v2
+    - uses: mr-smithers-excellent/docker-build-push@v6
+      name: Build & push Docker image
       with:
-        context: .
-        push: false
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/gestiondestock:latest
-
-    - name: Login to docker hub
-      uses: docker/login-action@v1
-      with:
+        image: repo/image
+        tags: v1, latest
+        registry: dockerhub.io
+        dockerfile: Dockerfile.ci
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} 
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-    - name: Push to docker hub
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/gestiondestock:latest
+    # - name: Build docker image
+    #   uses: docker/build-push-action@v2
+    #   with:
+    #     context: .
+    #     push: false
+    #     tags: ${{ secrets.DOCKER_HUB_USERNAME }}/gestiondestock:latest
+
+    # - name: Login to docker hub
+    #   uses: docker/login-action@v1
+    #   with:
+    #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
+    #     password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} 
+
+    # - name: Push to docker hub
+    #   uses: docker/build-push-action@v2
+    #   with:
+    #     context: .
+    #     push: true
+    #     tags: ${{ secrets.DOCKER_HUB_USERNAME }}/gestiondestock:latest
