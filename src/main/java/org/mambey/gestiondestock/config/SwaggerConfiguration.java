@@ -3,6 +3,7 @@ package org.mambey.gestiondestock.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -16,13 +17,14 @@ import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;
 
 @Configuration
+@Profile("dev")
 public class SwaggerConfiguration {
     
   @Value("${gimuemoa.openapi.dev-url}")
   private String devUrl;
 
-  @Value("${gimuemoa.openapi.prod-url}")
-  private String prodUrl;
+  /* @Value("${gimuemoa.openapi.prod-url}")
+  private String prodUrl; */
 
   @Bean
   public OpenAPI myOpenAPI() {
@@ -31,7 +33,7 @@ public class SwaggerConfiguration {
     devServer.setDescription("URL pour l'environnement de développement");
 
     Server prodServer = new Server();
-    prodServer.setUrl(prodUrl);
+    prodServer.setUrl(devUrl);
     prodServer.setDescription("URL pour l'environnement de production");
 
     Contact contact = new Contact();

@@ -67,16 +67,11 @@ public class WebSecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> 
           auth.antMatchers(
-            "/**/**/auth/**",
-            "/**/**/entreprises/create",
-            "/**/**/utilisateurs/create",
-            "/swagger-ui/**",
-            "/swagger/resources",
-            "/swagger/resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/webjars/**",
-            "/v3/api-docs/**"
+            "/**/**/auth/**",//end point pour s'authentifier et obtenir un token
+            "/**/**/entreprises/create",//Créer une entreprise et son user principal
+            "/**/**/utilisateurs/create",//ajouter un utilisateur
+            "/swagger-ui/**",//swagger-ui/index.html pour générer la documentation
+            "/v3/api-docs**"//renvoie le fichier json ///v3/api-docs.yaml télécharge le fichier yaml
           ).permitAll()
               .anyRequest().authenticated()
         );
