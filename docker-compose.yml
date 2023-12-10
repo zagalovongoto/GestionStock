@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # Spring Boot Application
   spring-app:
-    image: gestiondestock:latest  # Update with your actual image details
+    image: zagalovontogo/gestiondestock:latest  # Update with your actual image details
     ports:
       - "8080:8881"
     env_file:

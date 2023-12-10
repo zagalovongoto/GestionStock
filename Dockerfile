@@ -11,5 +11,5 @@ COPY target/gestiondestock-0.0.1-SNAPSHOT.jar gestiondestock.jar
 EXPOSE 8881
 
 # Commande pour démarrer l'application Spring Boot lorsque le conteneur démarre
-CMD ["java", "-jar", "--spring.profiles.active=prod", "gestiondestock.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=prod", "gestiondestock.jar"]
 
