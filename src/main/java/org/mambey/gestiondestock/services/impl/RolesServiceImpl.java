@@ -1,6 +1,7 @@
 package org.mambey.gestiondestock.services.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.mambey.gestiondestock.dto.RolesDto;
 import org.mambey.gestiondestock.exception.EntityAlreadyExistsException;
@@ -46,7 +47,9 @@ public class RolesServiceImpl implements RolesService{
 
     @Override
     public List<RolesDto> findAll() {
-        return null;
+        return rolesRepository.findAll().stream()
+                              .map(RolesDto::fromEntity)
+                              .collect(Collectors.toList());
     }
 
     @Override
