@@ -47,8 +47,8 @@ jobs:
         mvn package --file pom.xml
 
     - name: docker login
-      run: echo $DOCKER_PASSWORD | docker login -p $DOCKER_ACCESS_TOKEN
-        #docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
+      #run: echo $DOCKER_PASSWORD | docker login -p $DOCKER_ACCESS_TOKEN
+      run: docker login -u $DOCKER_USER -p $DOCKER_ACCESS_TOKEN  
     - name: Get current date # get the date of the build
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"    
