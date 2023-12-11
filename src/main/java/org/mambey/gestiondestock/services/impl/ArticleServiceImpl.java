@@ -22,7 +22,7 @@ import org.mambey.gestiondestock.repository.LigneCommandeClientRepository;
 import org.mambey.gestiondestock.repository.LigneCommandeFournisseurRepository;
 import org.mambey.gestiondestock.repository.LigneVenteRepository;
 import org.mambey.gestiondestock.services.ArticleService;
-import org.mambey.gestiondestock.services.EntrepriseService;
+import org.mambey.gestiondestock.services.CategoryService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ArticleServiceImpl implements ArticleService{
 
     private final ArticleRepository articleRepository;
-    private final EntrepriseService entrepriseService;
+    private final CategoryService categoryService;
     private final LigneVenteRepository ligneVenteRepository;
     private final LigneCommandeClientRepository ligneCommandeClientRepository;
     private final LigneCommandeFournisseurRepository ligneCommandeFournisseurRepository;
@@ -51,7 +51,7 @@ public class ArticleServiceImpl implements ArticleService{
         dto.setIdEntreprise(idEntreprise);
 
         //On s'assure que la catégorie existe dans la base de données
-        entrepriseService.findById(dto.getCategory().getId());
+        categoryService.findById(dto.getCategory().getId());
 
         var violations = articleValidator.validate(dto);
 
