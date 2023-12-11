@@ -83,4 +83,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: $DOCKER_USER/$REPO_NAME:${{ steps.date.outputs.date }},$DOCKER_USER/$REPO_NAME:latest
+          tags: ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_REPO_NAME}}:${{ steps.date.outputs.date }},${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_REPO_NAME}}:latest
