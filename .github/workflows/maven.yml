@@ -9,6 +9,7 @@ on:
 
 env:
   DOCKER_USER: ${{secrets.DOCKER_HUB_USERNAME}}
+  DOCKER_ACCESS_TOKEN: ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
   DOCKER_PASSWORD: ${{secrets.DOCKER_HUB_PASSWORD}}
   REPO_NAME: ${{secrets.DOCKER_REPO_NAME}}
 
@@ -46,7 +47,7 @@ jobs:
         mvn package --file pom.xml
 
     - name: docker login
-      run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
+      run: echo $DOCKER_PASSWORD | docker login -p $DOCKER_ACCESS_TOKEN
         #docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
     - name: Get current date # get the date of the build
       id: date
