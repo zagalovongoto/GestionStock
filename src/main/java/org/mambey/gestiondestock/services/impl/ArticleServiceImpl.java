@@ -50,15 +50,15 @@ public class ArticleServiceImpl implements ArticleService{
         Integer idEntreprise = Integer.parseInt(MDC.get("idEntreprise"));
         dto.setIdEntreprise(idEntreprise);
 
-        //On s'assure que la catégorie existe dans la base de données
-        categoryService.findById(dto.getCategory().getId());
-
         var violations = articleValidator.validate(dto);
 
         if(!violations.isEmpty()){
             log.error("L'article n'est pas valide {}", dto);
             throw new InvalidEntityException("Données invalides", ErrorCodes.ARTICLE_NOT_VALID, violations);
         }
+
+        //On s'assure que la catégorie existe dans la base de données
+        categoryService.findById(dto.getCategory().getId());
 
         // On vérifie l'existence de l'article
         if (articleRepository.existsByCodeArticle(dto.getCodeArticle())) {
