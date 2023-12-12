@@ -55,12 +55,8 @@ public class UtilisateurServiceImpl implements UtilisateurService{
             throw new EntityAlreadyExistsException("Un utilisateur avec cette adresse email existe déjà", ErrorCodes.UTILISATEUR_ALREADY_EXISTS);
         }
 
-        if(dto.getEntreprise() == null){
-            log.error("Vous ne pouvez pas créer un utilisateur avec une entreprise null");
-            throw new InvalidEntityException("Données invalides", ErrorCodes.UTILISATEUR_NOT_VALID, violations);
-        }else{
-            entrepriseService.findById(dto.getEntreprise().getId());
-        }
+        //On s'assure que l'entreprise existe
+        entrepriseService.findById(dto.getEntreprise().getId());
         
         Set<String> strRoles = dto.getRoles();
         Set<Roles> roles = new HashSet<>();

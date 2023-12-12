@@ -50,6 +50,7 @@ public class UtilisateurDto {
 
     private String photo;
 
+    @NotNull
     private EntrepriseDto entreprise;
 
     private Set<String> roles;

@@ -27,6 +27,7 @@ import org.mambey.gestiondestock.repository.LigneCommandeClientRepository;
 import org.mambey.gestiondestock.repository.LigneCommandeFournisseurRepository;
 import org.mambey.gestiondestock.repository.LigneVenteRepository;
 import org.mambey.gestiondestock.services.ArticleService;
+import org.mambey.gestiondestock.services.CategoryService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
 import static org.mockito.BDDMockito.*;
 import org.mockito.Mock;
@@ -40,6 +41,7 @@ import org.slf4j.MDC;
 public class ArticleServiceImplTest {
 
     @Mock ArticleRepository articleRepository;
+    @Mock CategoryService categoryService;
     @Mock LigneVenteRepository  ligneVenteRepository;
     @Mock LigneCommandeClientRepository ligneCommandeClientRepository;
     @Mock LigneCommandeFournisseurRepository ligneCommandeFournisseurRepository;
@@ -55,10 +57,11 @@ public class ArticleServiceImplTest {
 
         ObjectsValidator<ArticleDto> articleValidator = new ObjectsValidator<ArticleDto>();
         ArticleService articleService = new ArticleServiceImpl(articleRepository, 
-                                                                        ligneVenteRepository, 
-                                                                        ligneCommandeClientRepository, 
-                                                                        ligneCommandeFournisseurRepository, 
-                                                                        articleValidator);
+                                                                categoryService,
+                                                                ligneVenteRepository, 
+                                                                ligneCommandeClientRepository, 
+                                                                ligneCommandeFournisseurRepository, 
+                                                                articleValidator);
         this.articleService = articleService;
 
         CategoryDto categoryDto = CategoryDto.builder()
