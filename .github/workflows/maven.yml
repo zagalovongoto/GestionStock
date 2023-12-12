@@ -58,7 +58,7 @@ jobs:
       with:
         image: $DOCKER_USER/$REPO_NAME
         tags: ${{ steps.date.outputs.date }}, latest
-        registry: registry-url.io
+        registry: dockerhub.io
         dockerfile: Dockerfile.ci
         username: ${{ secrets.DOCKER_HUB_USERNAME}}
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
