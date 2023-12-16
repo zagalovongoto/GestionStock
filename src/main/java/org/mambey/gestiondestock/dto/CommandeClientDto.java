@@ -24,7 +24,6 @@ public class CommandeClientDto {
     private String code;
 
     @NotNull(message = "Veuillez renseigner la date de commande")
-    //@JsonFormat( shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Instant date;
 
     @NotNull(message = "Veuillez renseigner l'état de la commande")
@@ -43,7 +42,7 @@ public class CommandeClientDto {
         if(commandeClient == null){
             return null;
         }
-        //System.out.println((ClientDto.fromEntity(commandeClient.getClient())).toString());
+        
         return CommandeClientDto.builder()
             .id(commandeClient.getId())
             .code(commandeClient.getCode())
