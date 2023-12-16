@@ -39,7 +39,7 @@ public class ArticleDto {
 
     private Integer idEntreprise;
 
-    //@NotNull(message = "Veuillez renseigner la catégorie")
+    @NotNull(message = "Veuillez renseigner la catégorie")
     private CategoryDto category;
 
     public static ArticleDto fromEntity(Article article){
