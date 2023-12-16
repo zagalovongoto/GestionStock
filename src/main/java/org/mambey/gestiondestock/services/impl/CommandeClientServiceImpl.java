@@ -97,7 +97,7 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         }
 
         if(!articleErrors.isEmpty()){
-            log.warn("Article n'existepas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND);
+            log.warn("Article n'existe pas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND);
             throw new InvalidEntityException("Article n'existe pas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND, articleErrors);
         }
 
@@ -130,27 +130,6 @@ public class CommandeClientServiceImpl implements CommandeClientService{
                         "Aucune commande client avec l'ID " + id + " n'a été trouvé dans la BDD", 
                         ErrorCodes.COMMANDE_CLIENT_NOT_FOUND));
 
-        /* if(id == null){
-            log.error("CommandeClient ID is null");
-            return null;
-        }
-
-        Optional<CommandeClient> commandeClient = commandeClientRepository.findById(id);
-        List<LigneCommandeClientDto> ligneCommandeClients;
-        if(commandeClient.isPresent()){
-            ligneCommandeClients = ligneCommandeClientRepository.findAllByCommandeClientId(id).stream()
-                .map(LigneCommandeClientDto::fromEntity)
-                .collect(Collectors.toList());
-
-        }else{
-            throw new EntityNotFoundException(
-                        "Aucune commande client avec l'ID " + id + " n'a été trouvé dans la BDD", 
-                        ErrorCodes.COMMANDE_CLIENT_NOT_FOUND);
-        }
-
-        CommandeClientDto cmdClt = CommandeClientDto.fromEntity(commandeClient.get());
-        cmdClt.setLigneCommandeClients(ligneCommandeClients);
-        return cmdClt; */
     }
 
     @Override
