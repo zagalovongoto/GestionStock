@@ -2,6 +2,8 @@ package org.mambey.gestiondestock.dto;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.NotNull;
+
 import org.mambey.gestiondestock.model.LigneCommandeClient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,13 +17,16 @@ public class LigneCommandeClientDto {
    
     private Integer id;
 
+    @NotNull
     private ArticleDto article;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private CommandeClientDto commandeClient;
 
+    @NotNull
     private BigDecimal quantite;
 
+    @NotNull
     private BigDecimal prixUnitaire;
 
     private Integer idEntreprise;
