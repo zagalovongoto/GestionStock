@@ -21,20 +21,13 @@ import java.util.List;
 public class SwaggerConfiguration {
     
   @Value("${gimuemoa.openapi.dev-url}")
-  private String devUrl;
-
-  /* @Value("${gimuemoa.openapi.prod-url}")
-  private String prodUrl; */
+  private String url;
 
   @Bean
   public OpenAPI myOpenAPI() {
-    Server devServer = new Server();
-    devServer.setUrl(devUrl);
-    devServer.setDescription("URL pour l'environnement de développement");
-
-    Server prodServer = new Server();
-    prodServer.setUrl(devUrl);
-    prodServer.setDescription("URL pour l'environnement de production");
+    Server server = new Server();
+    server.setUrl(url);
+    server.setDescription("URL pour l'environnement de développement");
 
     Contact contact = new Contact();
     contact.setEmail("mambosag@gmail.com");
@@ -54,7 +47,7 @@ public class SwaggerConfiguration {
     
     return new OpenAPI()
         .info(info)
-        .servers(List.of(devServer, prodServer))
+        .servers(List.of(server))
         .addSecurityItem(new SecurityRequirement()
           .addList(securitySchemeName))
         .components(new Components()

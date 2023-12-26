@@ -14,19 +14,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RequestMapping(value = APP_ROOT + "/entreprises")
+@Tag(name="entreprise")
 public interface EntrepriseApi {
     
     @PostMapping(value= "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(operationId = "saveEntreprise")
     EntrepriseDto save(@RequestBody EntrepriseDto dto);
 
     @GetMapping(value= "/{idEntreprises}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "findEntrepriseById")
     EntrepriseDto findById(@PathVariable("idEntreprises") Integer id);
 
     @GetMapping(value= "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "findAllEntreprise")
     List<EntrepriseDto> findAll();
 
     @DeleteMapping(value= "/delete/{idEntreprises}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "deleteEntreprise")
     void delete(@PathVariable("idEntreprises") Integer id);
 }
