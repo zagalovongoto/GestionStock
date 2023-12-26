@@ -56,7 +56,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         logger.error("Cannot set user authentication: {}", e);
       }
   
-      MDC.put("idEntreprise", idEntreprise);
+      MDC.put("idEntreprise", idEntreprise);//
       filterChain.doFilter(request, response);
     }
 }

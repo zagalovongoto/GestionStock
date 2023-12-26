@@ -12,11 +12,12 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest//Annotation pour les tests d'intégration. Le context de spring est utilisé
+//Par conséquent, on peut faire l'injection de dépendance en utilisant par exemple @Autowired
 public class CategoryServiceImplTest {
 
     @Autowired
-    CategoryService categoryService;
+    CategoryService categoryService;//La classe q'on vaut tester
 
     @BeforeEach
     public void setIdEntreprise(){

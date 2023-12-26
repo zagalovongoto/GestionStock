@@ -34,7 +34,7 @@ import org.slf4j.MDC;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(MockitoExtension.class)//On va utiliser des annotations de Mockito comme @Mock et @InjectMock
 public class CommandeClientServiceImplTest {
 
     @Mock CommandeClientRepository commandeClientRepository;
@@ -52,6 +52,9 @@ public class CommandeClientServiceImplTest {
     @BeforeEach
     void setup(){
         ObjectsValidator<CommandeClientDto> commandeClientValidator = new ObjectsValidator<CommandeClientDto>();
+        //On ne peut pas utiliser @InjectMock pour injecter CommandeClientService qui est la méthode sous test parce que
+        //une de ses dépendances (commandeClientValidator) est créé manuellement. Ceci parce que nous n'avons pas le contexte
+        //de spring(@SpringBootTest) pour pouvoir l'injecter.
         CommandeClientService commandeClientService = new CommandeClientServiceImpl(commandeClientRepository, 
         clientRepository, articleRepository, ligneCommandeClientRepository, mvtStkService, commandeClientValidator);
         this.commandeClientService = commandeClientService;

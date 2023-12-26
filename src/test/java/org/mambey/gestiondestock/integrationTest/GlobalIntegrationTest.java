@@ -109,7 +109,16 @@ public class GlobalIntegrationTest {
         userArrays = getUsersRequestEntity.getBody();
         assertThat(userArrays.length).isNotEqualTo(0);
         assertThat(userArrays[0].getNom()).isEqualTo("GIM-UEMOA");
-        
+
+        //TODO: Ajouter des catégories
+
+        //TODO: Ajouter des articles
+
+        //Ajouter un client
+
+        //TODO: Ajouter une commande client
+
+        //TODO: Ajouter une commande fournisseur
 
     }
     

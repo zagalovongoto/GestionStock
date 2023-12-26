@@ -17,9 +17,10 @@ import org.springframework.context.annotation.Import;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
+@DataJpaTest// Slice test permettant d'utiliser le contexte de spring
 @Import(JpaAuditingConfiguration.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)//indique que JUnit 5 doit instancier la classe de test une seule fois pour tous les tests 
+//dans cette classe. Par défaut l'initiation se fait par méthode
 public class ArticleRepositoryTest {
 
     @Autowired
@@ -32,6 +33,8 @@ public class ArticleRepositoryTest {
 
     @BeforeEach
     void setup(){//Avant chaque test on insère une catégorie et un article
+        //Les tests s'executent en isolation par conséquent les données insérées par un test 
+        //ne sont pas accessible par un aitre test
 
         Category category = new Category();
         category.setCode("CAT003");
@@ -95,20 +98,21 @@ public class ArticleRepositoryTest {
     void testFindAllByCategoryId() {
 
         List<Article> listArticles = this.articleRepository.findAllByCategoryId(this.category.getId());
-        assertThat(listArticles).size().isEqualTo(1);
+        assertThat(listArticles).size().isEqualTo(1);//assertj
     }
 
     @Test//Exemple de test d'une méthode qui retourne un Optional
     void testFindByCodeArticle() {
 
-        Article article = articleRepository.findByCodeArticleAndDesignation("DET01", "Madar Liquide").get();
+        Article article = articleRepository.findByCodeArticle("DET01").get();
         assertThat(article).isNotNull();
     }
 
     @Test
     @Disabled
     void testFindByCodeArticleAndDesignation() {
-
+        Article article = articleRepository.findByCodeArticleAndDesignation("DET01", "Madar Liquide").get();
+        assertThat(article).isNotNull();
     }
 
     @Test

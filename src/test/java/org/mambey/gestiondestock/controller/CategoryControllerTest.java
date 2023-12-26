@@ -17,7 +17,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@WebMvcTest slice test ne charge les beans de spring security du coup il faut désactiver la sécurité
+//@WebMvcTest slice test ne charge pas les beans de spring security du coup il faut désactiver la sécurité
+//Spring fait l'injection des dépendances mais celà se limite uniquement aux beans necessaires pour le test d'un controlleur
 @WebMvcTest(controllers = CategoryController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 public class CategoryControllerTest {
 

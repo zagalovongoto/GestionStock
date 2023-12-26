@@ -67,7 +67,7 @@ public class WebSecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> 
           auth.antMatchers(
-            "/**/**/auth/**",//end point pour s'authentifier et obtenir un token
+            "/**/**/auth/authenticate",//end point pour s'authentifier et obtenir un token
             "/**/**/entreprises/create",//Créer une entreprise et son user principal
             "/**/**/utilisateurs/create",//ajouter un utilisateur
             "/swagger-ui/**",//swagger-ui/index.html pour générer la documentation
@@ -77,7 +77,7 @@ public class WebSecurityConfig {
               .anyRequest().authenticated()
         );
     
- // fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'
+    // fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'
     //http.headers(headers -> headers.frameOptions(frameOption -> frameOption.sameOrigin()));
     
     http.authenticationProvider(authenticationProvider());

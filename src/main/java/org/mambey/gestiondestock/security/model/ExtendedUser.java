@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.User;
 import lombok.Getter;
 import lombok.Setter;
 
+//Cette classe n'est plus utilisée. Nous avons créé plutôt une implémentation de l'interface UserDetaailsService
 public class ExtendedUser extends User{
     
     @Getter
