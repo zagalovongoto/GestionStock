@@ -9,7 +9,6 @@ import org.mambey.gestiondestock.dto.LigneCommandeFournisseurDto;
 import org.mambey.gestiondestock.dto.LigneVenteDto;
 import org.mambey.gestiondestock.services.ArticleService;
 import org.springframework.web.bind.annotation.RestController;
-
 import lombok.RequiredArgsConstructor;
 
 @RestController

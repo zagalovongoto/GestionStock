@@ -2,23 +2,24 @@ version: '3.8'
 
 services:
   # Spring Boot Application
-  spring-app:
+  app-container:
+    container_name: app-container 
     image: zagalovontogo/gestiondestock:latest  # Update with your actual image details
     ports:
       - "8882:8881"
     env_file:
       - ./gestiondestock-env-file.env  # Path to your combined environment file
     depends_on:
-      - mysql-db
+      - db-container
 
   # MySQL Database
-  mysql-db:
+  db-container:
+    container_name: db-container
     image: mysql:latest
     ports:
       - "3306:3306"
     env_file:
       - ./gestiondestock-env-file.env  # Path to your combined environment file
-      - services:
     volumes:
       - db_data:/var/lib/mysql
     restart: always

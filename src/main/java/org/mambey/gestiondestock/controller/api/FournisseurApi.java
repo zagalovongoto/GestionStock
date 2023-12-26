@@ -14,19 +14,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RequestMapping(value = APP_ROOT + "/fournisseurs")
+@Tag(name="fournisseur")
 public interface FournisseurApi {
     
     @PostMapping(value= "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(operationId = "saveFournisseur")
     FournisseurDto save(@RequestBody FournisseurDto dto);
 
     @GetMapping(value= "/{idFournisseurs}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "findFournisseurById")
     FournisseurDto findById(@PathVariable("idFournisseurs") Integer id);
 
     @GetMapping(value= "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "findAllFournisseur")
     List<FournisseurDto> findAll();
 
     @DeleteMapping(value= "/delete/{idFournisseurs}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "deleteFournisseur")
     void delete(@PathVariable("idFournisseurs") Integer id);
 }
