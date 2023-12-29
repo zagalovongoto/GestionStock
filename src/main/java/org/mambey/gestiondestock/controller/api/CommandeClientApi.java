@@ -8,6 +8,7 @@ import static org.mambey.gestiondestock.utils.Constants.APP_ROOT;
 import org.mambey.gestiondestock.dto.CommandeClientDto;
 import org.mambey.gestiondestock.model.EtatCommande;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,19 +24,29 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RequestMapping(value = APP_ROOT + "/commandeclients")
-@Tag(name="commandeclt")
+@Tag(name="commandecltApi")
 public interface CommandeClientApi {
     
-    @PostMapping(value= "/create")
+    @PostMapping(
+        value= "/create", 
+        consumes = MediaType.APPLICATION_JSON_VALUE, 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "saveCmdeClt")
     ResponseEntity<CommandeClientDto> save(@RequestBody CommandeClientDto dto);
 
-    @PatchMapping(value= "/update/etat/{etatCommande}/{idCommande}")
+    @PatchMapping(
+        value= "/update/etat/{etatCommande}/{idCommande}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(operationId = "CmdCltupdateEtatCommande")
     ResponseEntity<CommandeClientDto> updateEtatCommande(@PathVariable("idCommande") Integer idCommande, @PathVariable("etatCommande") EtatCommande etatCommande);
 
-    @PatchMapping(value= "/update/quantite/{idCommande}/{idLigneCommande}/{quantite}")
+    @PatchMapping(
+        value= "/update/quantite/{idCommande}/{idLigneCommande}/{quantite}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(operationId = "CmdCltUpdateQuantiteCommandee")
     ResponseEntity<CommandeClientDto> updateQuantiteCommandee(
@@ -44,41 +55,66 @@ public interface CommandeClientApi {
         @PathVariable("quantite") BigDecimal quantite
     );
 
-    @PatchMapping(value= "/update/article/{idCommande}/{idLigneCommande}/{idArticle}")
+    @PatchMapping(
+        value= "/update/article/{idCommande}/{idLigneCommande}/{idArticle}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(operationId = "CmdCltUpdateArticle")
     ResponseEntity<CommandeClientDto> updateArticle(
         @PathVariable("idCommande") Integer idCommande, 
         @PathVariable("idLigneCommande") Integer idLigneCommande, 
-        @PathVariable("idArticle") Integer idArticle);
+        @PathVariable("idArticle") Integer idArticle
+    );
 
-    @PatchMapping(value= "/update/client/{idCommande}/{idClient}")
+    @PatchMapping(
+        value= "/update/client/{idCommande}/{idClient}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(operationId = "CmdCltUpdateClient")
     ResponseEntity<CommandeClientDto> updateClient(@PathVariable("idCommande") Integer idCommande, @PathVariable("idClient") Integer idClient);
 
-    @DeleteMapping(value= "/delete/article/{idCommande}/{idLigneCommande}")
+    @DeleteMapping(
+        value= "/delete/article/{idCommande}/{idLigneCommande}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(operationId = "CmdCltdeleteArticle")
     ResponseEntity<CommandeClientDto> deleteArticle(@PathVariable("idCommande") Integer idCommande, @PathVariable("idLigneCommande") Integer idLigneCommande);
 
-    @GetMapping(value= "/{idCommandeClient}")
+    @GetMapping(
+        value= "/{idCommandeClient}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findCmdCltById")
     ResponseEntity<CommandeClientDto> findById(@PathVariable("idCommandeClient") Integer id);
 
-    @GetMapping(value= "/code/{codeCommandeClient}")
+    @GetMapping(
+        value= "/code/{codeCommandeClient}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findCmdCltByCode")
     ResponseEntity<CommandeClientDto> findByCode(@PathVariable("codeCommandeClient") String code);
 
-    @GetMapping(value= "/all")
+    @GetMapping(
+        value= "/all", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findAllCmdClt")
     ResponseEntity<List<CommandeClientDto>> findAll();
 
-    @GetMapping(value= "/page")
+    @GetMapping(
+        value= "/page",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findAllCmdCltByPage")
     ResponseEntity<List<CommandeClientDto>> findAllByPage(@RequestParam("page") int page, @RequestParam("size") int size);
 
-    @DeleteMapping(value= "/delete/{idCommandeClient}")
+    @DeleteMapping(
+        value= "/delete/{idCommandeClient}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "deleteCmdClt")
     ResponseEntity<Void> delete(@PathVariable("idCommandeClient") Integer id);
 }

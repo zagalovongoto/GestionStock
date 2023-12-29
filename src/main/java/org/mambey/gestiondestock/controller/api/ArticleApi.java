@@ -8,6 +8,7 @@ import org.mambey.gestiondestock.dto.LigneCommandeClientDto;
 import org.mambey.gestiondestock.dto.LigneCommandeFournisseurDto;
 import org.mambey.gestiondestock.dto.LigneVenteDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,10 +21,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RequestMapping(value = APP_ROOT + "/articles")
-@Tag(name="article")
+@Tag(name="articleApi")
 public interface ArticleApi {
     
-    @PostMapping(value= "/create")
+    @PostMapping(
+        value= "/create", 
+        consumes = MediaType.APPLICATION_JSON_VALUE, 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(
         summary = "save article",
@@ -32,35 +37,59 @@ public interface ArticleApi {
     )
     ArticleDto save(@RequestBody ArticleDto dto);
 
-    @GetMapping(value= "/{idArticle}")
+    @GetMapping(
+        value= "/{idArticle}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findArticleById")
     ArticleDto findById(@PathVariable("idArticle") Integer id);
 
-    @GetMapping(value= "/find/{codeArticle}")
+    @GetMapping(
+        value= "/find/{codeArticle}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findArticleByCode")
     ArticleDto findByCodeArticle(@PathVariable("codeArticle") String codeArticle);
 
-    @GetMapping(value= "/all")
+    @GetMapping(
+        value= "/all", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findAllArticle")
     List<ArticleDto> findAll();
 
-    @GetMapping(value= "/historique/vente/{idArticle}")
+    @GetMapping(
+        value= "/historique/vente/{idArticle}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findArticleHistoriqueVente")
     List<LigneVenteDto> findHistoriqueVentes(@PathVariable("idArticle") Integer idArticle);
 
-    @GetMapping(value= "/historique/commandeclient/{idArticle}")
+    @GetMapping(
+        value= "/historique/commandeclient/{idArticle}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findArticleHistoriqueCommandeClient")
     List<LigneCommandeClientDto> findHistoriqueCommandeClient(@PathVariable("idArticle") Integer idArticle);
 
-    @GetMapping(value= "/historique/commandefournisseur/{idArticle}")
+    @GetMapping(
+        value= "/historique/commandefournisseur/{idArticle}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findArticleHistoriqueCommandeFournisseur")
     List<LigneCommandeFournisseurDto> findHistoriqueCommandeFournisseur(@PathVariable("idArticle") Integer idArticle);
 
-    @GetMapping(value= "/filter/{idCategory}")
+    @GetMapping(
+        value= "/filter/{idCategory}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findAllArticleByIdCategory")
     List<ArticleDto> findAllArticleByIdCategory(@PathVariable("idCategory") Integer idArticle);
 
-    @DeleteMapping(value= "/delete/{idArticle}")
+    @DeleteMapping(
+        value= "/delete/{idArticle}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "deleteArticle")
     void delete(@PathVariable("idArticle") Integer id);
 }

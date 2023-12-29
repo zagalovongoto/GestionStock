@@ -14,17 +14,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.mambey.gestiondestock.security.model.UserDetailsImpl;
-import org.mambey.gestiondestock.security.payload.request.LoginRequest;
-import org.mambey.gestiondestock.security.payload.response.LoginResponse;
+import org.mambey.gestiondestock.services.UtilisateurService;
+import org.mambey.gestiondestock.security.dto.ChangerMotDePasse;
+import org.mambey.gestiondestock.security.dto.LoginRequest;
+import org.mambey.gestiondestock.security.dto.LoginResponse;
+import org.mambey.gestiondestock.security.dto.MessageResponse;
 import org.mambey.gestiondestock.security.jwt.JwtUtils;
 import static org.mambey.gestiondestock.utils.Constants.APP_ROOT;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(APP_ROOT)
+@Tag(name = "authenticationApi")
 public class AuthController {
-  @Autowired
-  AuthenticationManager authenticationManager;
+
+  private final AuthenticationManager authenticationManager;
+  private final UtilisateurService utilisateurService;
 
   @Autowired
   JwtUtils jwtUtils;
@@ -37,7 +46,7 @@ public class AuthController {
   public ResponseEntity<LoginResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
     Authentication authentication = authenticationManager
-        .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -51,5 +60,18 @@ public class AuthController {
 
     return ResponseEntity.status(HttpStatus.CREATED)
                          .body(loginResponse);
+  }
+
+  @PostMapping(
+    value = "/auth/changepwd", 
+    consumes = MediaType.APPLICATION_JSON_VALUE, 
+    produces = MediaType.APPLICATION_JSON_VALUE
+  )
+  public ResponseEntity<MessageResponse> changePwd(@RequestBody ChangerMotDePasse dto){
+
+    utilisateurService.updatePassword(dto);
+
+    return ResponseEntity.status(HttpStatus.OK)
+                         .body(new MessageResponse("Mot de passe modifié avec succès"));
   }
 }

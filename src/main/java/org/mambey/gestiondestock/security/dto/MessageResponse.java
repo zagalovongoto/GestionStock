@@ -1,4 +1,4 @@
-package org.mambey.gestiondestock.security.payload.request;
+package org.mambey.gestiondestock.security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
+public class MessageResponse {
     
-    private String username;
-
-    private String password;
+    private String message;
 
 }

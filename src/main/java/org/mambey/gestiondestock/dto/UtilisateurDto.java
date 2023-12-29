@@ -40,7 +40,7 @@ public class UtilisateurDto {
 
     @NotBlank(message = "Veuillez renseigner l'adresse email de l'utilisateur")
     @Size(min = 8, message = "Mot de passe trop court")
-    @Size(max = 50, message = "Mot de passe trop long")
+    //@Size(max = 50, message = "Mot de passe trop long")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String motDePasse;
 

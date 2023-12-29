@@ -18,23 +18,36 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RequestMapping(value = APP_ROOT + "/fournisseurs")
-@Tag(name="fournisseur")
+@Tag(name="fournisseurApi")
 public interface FournisseurApi {
     
-    @PostMapping(value= "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+        value= "/create", 
+        consumes = MediaType.APPLICATION_JSON_VALUE, 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(operationId = "saveFournisseur")
     FournisseurDto save(@RequestBody FournisseurDto dto);
 
-    @GetMapping(value= "/{idFournisseurs}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(
+        value= "/{idFournisseurs}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findFournisseurById")
     FournisseurDto findById(@PathVariable("idFournisseurs") Integer id);
 
-    @GetMapping(value= "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(
+        value= "/all", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findAllFournisseur")
     List<FournisseurDto> findAll();
 
-    @DeleteMapping(value= "/delete/{idFournisseurs}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(
+        value= "/delete/{idFournisseurs}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "deleteFournisseur")
     void delete(@PathVariable("idFournisseurs") Integer id);
 }

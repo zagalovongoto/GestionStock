@@ -18,23 +18,36 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RequestMapping(value = APP_ROOT + "/categories")
-@Tag(name="category")
+@Tag(name="categoryApi")
 public interface CategoryApi {
     
-    @PostMapping(value= "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+        value= "/create", 
+        consumes = MediaType.APPLICATION_JSON_VALUE, 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(operationId = "saveCategory")
     CategoryDto save(@RequestBody CategoryDto dto);
 
-    @GetMapping(value= "/{idCategory}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(
+        value= "/{idCategory}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findCategoryById")
     CategoryDto findById(@PathVariable("idCategory") Integer id);
 
-    @GetMapping(value= "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(
+        value= "/all", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findAllCategory")
     List<CategoryDto> findAll();
 
-    @DeleteMapping(value= "/delete/{idCategory}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(
+        value= "/delete/{idCategory}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "deleteCategory")
     void delete(@PathVariable("idCategory") Integer id);
 }

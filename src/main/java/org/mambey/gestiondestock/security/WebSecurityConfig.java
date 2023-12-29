@@ -60,7 +60,8 @@ public class WebSecurityConfig {
   
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable())
+    http.cors(cors -> cors.disable())
+        .csrf(csrf -> csrf.disable())
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler)
                                                  .accessDeniedHandler(forbiddenHandler)
         )
@@ -74,12 +75,12 @@ public class WebSecurityConfig {
             "/v3/api-docs**/**",//renvoie le fichier json ///v3/api-docs.yaml télécharge le fichier yaml
             "/initialize"
           ).permitAll()
-              .anyRequest().authenticated()
+           .anyRequest().authenticated()
         );
     
     // fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'
     //http.headers(headers -> headers.frameOptions(frameOption -> frameOption.sameOrigin()));
-    
+    http.cors();
     http.authenticationProvider(authenticationProvider());
 
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

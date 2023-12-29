@@ -10,14 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
+@ResponseStatus(HttpStatus.FORBIDDEN)
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
   private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);

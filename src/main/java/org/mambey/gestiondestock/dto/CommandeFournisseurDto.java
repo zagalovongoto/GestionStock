@@ -23,7 +23,7 @@ public class CommandeFournisseurDto {
     @NotBlank(message = "Veuillez remplir le code commande")
     private String code;
 
-    @NotNull(message = "Veuillez renseigner la date de commande")
+    //@NotNull(message = "Veuillez renseigner la date de commande")
     private Instant dateCommande;
 
     @NotNull(message = "Veuillez renseigner l'état de la commande")

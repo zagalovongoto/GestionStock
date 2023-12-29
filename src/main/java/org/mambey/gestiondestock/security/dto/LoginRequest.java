@@ -1,7 +1,6 @@
-package org.mambey.gestiondestock.security.payload.request;
+package org.mambey.gestiondestock.security.dto;
 
-import java.util.Set;
-
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,14 +11,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignupRequest {
+public class LoginRequest {
     
-    private String username;
-
+    @NotBlank
     private String email;
 
+    @NotBlank
     private String password;
-
-    private Set<String> roles;
 
 }

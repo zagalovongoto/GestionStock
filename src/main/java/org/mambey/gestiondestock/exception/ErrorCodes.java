@@ -42,7 +42,10 @@ public enum ErrorCodes {
     //Liste des erreurs techniques
     UPDATE_PHOTO_EXCEPTION(15000),
     UNKNOWN_CONTEXT(15001),
-    INVALID_DATA(100000)
+    PASSWORDS_NOT_MATCH(16001),
+    INCORRECT_PASSWORD(16002),
+    INVALID_DATA(100000),
+    
     ;
 
     private int code;

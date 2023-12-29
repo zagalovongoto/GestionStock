@@ -9,6 +9,7 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -90,6 +91,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
             //.message(ex.getMessage())
             .message("Type de données invalide")
             .build();
+		return handleExceptionInternal(ex, errorDto, headers, status, request);
+	}
+
+    @Override
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+			MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        final ErrorDto errorDto = ErrorDto.builder()
+        .code(ErrorCodes.INVALID_DATA)
+        .httpCode(status.value())
+        //.message(ex.getMessage())
+        .message("Arguments invalides")
+        .build();
+
 		return handleExceptionInternal(ex, errorDto, headers, status, request);
 	}
 

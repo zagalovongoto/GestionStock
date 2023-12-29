@@ -2,6 +2,8 @@ package org.mambey.gestiondestock.dto;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.NotNull;
+
 import org.mambey.gestiondestock.model.LigneCommandeFournisseur;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,8 +22,10 @@ public class LigneCommandeFournisseurDto {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private CommandeFournisseurDto commandeFournisseur;
 
+    @NotNull
     private BigDecimal quantite;
 
+    @NotNull
     private BigDecimal prixUnitaire;
 
     private Integer idEntreprise;

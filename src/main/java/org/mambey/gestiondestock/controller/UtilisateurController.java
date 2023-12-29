@@ -36,5 +36,10 @@ public class UtilisateurController implements UtilisateurApi{
         utilisateurService.delete(id);
     }
 
+    @Override
+    public UtilisateurDto findByEmail(String email) {
+        return utilisateurService.findByEmail(email);
+    }
+
     
 }

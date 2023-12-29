@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -46,5 +48,6 @@ public class Entreprise extends AbstractEntity{
     private String siteWeb;
 
     @OneToMany(mappedBy = "entreprise")
+    @JsonIgnore
     private List<Utilisateur> utilisateurs;
 }

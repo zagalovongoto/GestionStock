@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.mambey.gestiondestock.dto.UtilisateurDto;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,27 +18,44 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RequestMapping(value = APP_ROOT + "/utilisateurs")
-@Tag(name="utilisateur")
+@Tag(name="utilisateurApi")
 public interface UtilisateurApi {
     
-    @PostMapping(value= "/create")
+    @PostMapping(
+        value= "/create", 
+        consumes = MediaType.APPLICATION_JSON_VALUE, 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     //@PreAuthorize("hasRole('ADMIN')")
     @Operation(operationId = "saveUtilisateur")
     UtilisateurDto save(@RequestBody UtilisateurDto dto);
 
-    @GetMapping(value= "/{idUtilisateur}")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @GetMapping(
+        value= "/{idUtilisateur}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findUtilisateurById")
     UtilisateurDto findById(@PathVariable("idUtilisateur") Integer id);
 
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    @GetMapping(value= "/all")
+    @GetMapping(
+        value= "/find/{emailUtilisateur}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(operationId = "findUtilisateurByEmail")
+    UtilisateurDto findByEmail(@PathVariable("emailUtilisateur") String email);
+
+    @GetMapping(
+        value= "/all", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findAllUtilisateur")
     List<UtilisateurDto> findAll();
 
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @DeleteMapping(value= "/delete/{idUtilisateur}")
+    @DeleteMapping(
+        value= "/delete/{idUtilisateur}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "deleteUtilisateur")
     void delete(@PathVariable("idUtilisateur") Integer id);
 }

@@ -6,24 +6,23 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.mambey.gestiondestock.dto.ChangerMotDePasseUtilisateurDto;
 import org.mambey.gestiondestock.dto.UtilisateurDto;
 import org.mambey.gestiondestock.exception.EntityAlreadyExistsException;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
-import org.mambey.gestiondestock.exception.InvalidOperationException;
 import org.mambey.gestiondestock.exception.InvalidEntityException;
 import org.mambey.gestiondestock.model.Roles;
 import org.mambey.gestiondestock.model.Utilisateur;
 import org.mambey.gestiondestock.repository.RolesRepository;
 import org.mambey.gestiondestock.repository.UtilisateurRepository;
+import org.mambey.gestiondestock.security.dto.ChangerMotDePasse;
 import org.mambey.gestiondestock.security.model.ERole;
 import org.mambey.gestiondestock.services.EntrepriseService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
 import org.mambey.gestiondestock.services.UtilisateurService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +38,7 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     private final EntrepriseService entrepriseService;
 
     private final ObjectsValidator<UtilisateurDto> utilisateurValidator;
+    private final ObjectsValidator<ChangerMotDePasse> updateValidator;
 
     @Override
     public UtilisateurDto save(UtilisateurDto dto) {
@@ -52,7 +52,10 @@ public class UtilisateurServiceImpl implements UtilisateurService{
         // On vérifie l'existence de l'utilisateur
         if (utilisateurRepository.existsByEmail(dto.getEmail())) {
             log.error("L'utilisateur avec l'email " + dto.getEmail()+" existe déjà dans la base");
-            throw new EntityAlreadyExistsException("Un utilisateur avec cette adresse email existe déjà", ErrorCodes.UTILISATEUR_ALREADY_EXISTS);
+            throw new EntityAlreadyExistsException(
+                "Un utilisateur avec cette adresse email existe déjà", 
+                ErrorCodes.UTILISATEUR_ALREADY_EXISTS
+            );
         }
 
         //On s'assure que l'entreprise existe
@@ -152,59 +155,39 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     }
 
     @Override
-    public UtilisateurDto changerMotDePasse(ChangerMotDePasseUtilisateurDto dto) {
+    public void updatePassword(ChangerMotDePasse dto) {
         
-        validate(dto);
-        
-        Optional<Utilisateur> utilisateurOptional = utilisateurRepository.findById(dto.getId());
-        if(utilisateurOptional.isEmpty()){
-            log.warn("Aucun utilisateur n'a été trouvé avec l'ID "+ dto.getId());
-            throw new EntityNotFoundException(
-                "Aucun utilisateur n'a été trouvé avec l'ID "+ dto.getId() , 
-                ErrorCodes.UTILISATEUR_NOT_FOUND
-            );
+        var violations = updateValidator.validate(dto);
+
+        if(!violations.isEmpty()){
+            log.error("Invalid datas {}", dto);
+            throw new InvalidEntityException("Données invalides", ErrorCodes.UTILISATEUR_NOT_VALID, violations);
         }
 
-        Utilisateur utilisateur = utilisateurOptional.get();
-        utilisateur.setMotDePasse(encoder.encode(dto.getMotDePasse()));
-        return UtilisateurDto.fromEntity(
-            utilisateurRepository.save(utilisateur)
+        // Vérifier si le nouveau mot de passe et la confirmation sont identiques
+        if (!dto.getNouveau().equals(dto.getConfirmation())) {
+        log.error("Les mots de passe ne matchent pas");
+        throw new InvalidEntityException(
+            "Le nouveau mot de passe et la confirmation ne correspondent pas.", 
+            ErrorCodes.PASSWORDS_NOT_MATCH
         );
-    }
-    
+        }
 
-    private void validate(ChangerMotDePasseUtilisateurDto dto){
+        // Récupérer l'identifiant de l'utilisateur actuel
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if(dto == null){
-            log.warn("Impossible de modifier le mot de passe avec un objet null");
+        // Vérifier l'ancien mot de passe
+        UtilisateurDto utilisateur = this.findByEmail(email);
+        if (!encoder.matches(dto.getAncien(), utilisateur.getMotDePasse())) {
+            log.error("Mot de passe incorrect");
             throw new InvalidEntityException(
-                "Aucune information n'a été fourni pour pouvoir changer le mot de passe." , 
-                ErrorCodes.UTILISATEUR_CHANGE_PASSWORD_OBJECT_NOT_VALID
+            "Ancien mot de passe incorect", 
+            ErrorCodes.INCORRECT_PASSWORD
             );
         }
 
-        if(dto.getId() == null){
-            log.warn("Impossible de modifier le mot de passe avec un ID null");
-            throw new InvalidEntityException(
-                "ID utilisateur null: impossible de modifier le mot de passe" , 
-                ErrorCodes.UTILISATEUR_CHANGE_PASSWORD_OBJECT_NOT_VALID
-            );
-        }
-
-        if(!StringUtils.hasLength(dto.getMotDePasse()) || !StringUtils.hasLength(dto.getConfirmMotDePasse())){
-            log.warn("Impossible de modifier le mot de passe avec un ID null");
-            throw new InvalidOperationException(
-                "Impossible de modifier le mot de passe avec un mot de passe NULL" , 
-                ErrorCodes.UTILISATEUR_CHANGE_PASSWORD_OBJECT_NOT_VALID
-            );
-        }
-
-        if(!dto.getMotDePasse().equals(dto.getConfirmMotDePasse())){
-            log.warn("Impossible de modifier le mot de passe avec deux mots de passe différents");
-            throw new InvalidOperationException(
-                "MOts de passe utilisateur non conformes: Impossible de modifier le mot de passe" , 
-                ErrorCodes.UTILISATEUR_CHANGE_PASSWORD_OBJECT_NOT_VALID
-            );
-        }
+        // Changer le mot de passe
+        utilisateur.setMotDePasse(encoder.encode(dto.getNouveau()));
+        utilisateurRepository.save(UtilisateurDto.toEntity(utilisateur));
     }
 }

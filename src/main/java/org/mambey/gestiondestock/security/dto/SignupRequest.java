@@ -1,6 +1,7 @@
-package org.mambey.gestiondestock.security.payload.response;
+package org.mambey.gestiondestock.security.dto;
 
-import java.util.List;
+import java.util.Set;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,14 +12,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfoResponse {
+public class SignupRequest {
     
-    private Long id;
-
     private String username;
 
     private String email;
 
-    private List<String> roles;
+    private String password;
+
+    private Set<String> roles;
 
 }

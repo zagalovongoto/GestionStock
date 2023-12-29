@@ -18,23 +18,36 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RequestMapping(value = APP_ROOT + "/entreprises")
-@Tag(name="entreprise")
+@Tag(name="entrepriseApi")
 public interface EntrepriseApi {
     
-    @PostMapping(value= "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+        value= "/create", 
+        consumes = MediaType.APPLICATION_JSON_VALUE, 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(operationId = "saveEntreprise")
     EntrepriseDto save(@RequestBody EntrepriseDto dto);
 
-    @GetMapping(value= "/{idEntreprises}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(
+        value= "/{idEntreprises}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findEntrepriseById")
     EntrepriseDto findById(@PathVariable("idEntreprises") Integer id);
 
-    @GetMapping(value= "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(
+        value= "/all", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "findAllEntreprise")
     List<EntrepriseDto> findAll();
 
-    @DeleteMapping(value= "/delete/{idEntreprises}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(
+        value= "/delete/{idEntreprises}", 
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(operationId = "deleteEntreprise")
     void delete(@PathVariable("idEntreprises") Integer id);
 }
