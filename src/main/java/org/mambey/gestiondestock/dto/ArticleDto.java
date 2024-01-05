@@ -35,6 +35,7 @@ public class ArticleDto {
     @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal prixUnitaireTtc;
 
+    //@JsonIgnore
     private String photo;
 
     private Integer idEntreprise;
@@ -47,6 +48,9 @@ public class ArticleDto {
         if(article == null){
             return null;
         }
+
+        //String sptr = System.getProperty("file.separator");
+        //String photoUrl = APP_ROOT+sptr+"photos"+sptr+"article"+sptr+String.valueOf(article.getId());
 
         return ArticleDto.builder()
             .id(article.getId())

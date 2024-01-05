@@ -79,6 +79,7 @@ public class CategoryServiceImpl implements CategoryService{
         findById(id);
         
         List<Article> articles = articleRepository.findAllByCategoryId(id);
+        
         if(!articles.isEmpty()){
             throw new InvalidOperationException(
                 "Impossible de supprimer une catégorie déjà utilisé",

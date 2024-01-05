@@ -109,5 +109,5 @@ public interface CommandeFournisseurApi {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(operationId = "deleteCmdFrs")
-    ResponseEntity<Void> delete(@PathVariable("idCommandeFournisseur") Integer id);
+    ResponseEntity<?> delete(@PathVariable("idCommandeFournisseur") Integer id);
 }

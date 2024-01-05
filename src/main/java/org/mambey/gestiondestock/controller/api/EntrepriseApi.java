@@ -6,6 +6,7 @@ import java.util.List;
 import org.mambey.gestiondestock.dto.EntrepriseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,5 +50,5 @@ public interface EntrepriseApi {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(operationId = "deleteEntreprise")
-    void delete(@PathVariable("idEntreprises") Integer id);
+    ResponseEntity<?> delete(@PathVariable("idEntreprises") Integer id);
 }

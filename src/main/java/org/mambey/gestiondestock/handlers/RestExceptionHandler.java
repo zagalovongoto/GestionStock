@@ -17,10 +17,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-@ResponseStatus(HttpStatus.NOT_FOUND)//Permet à open api d'inclure ces réponse d'erreurs
 public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     
     @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)//Permet à open api d'inclure ces réponse d'erreurs
     public ResponseEntity<ErrorDto> handleExcEntity(EntityNotFoundException exception, WebRequest webRequest){
 
         final HttpStatus notFound = HttpStatus.NOT_FOUND;
@@ -65,6 +65,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     }
 
     @ExceptionHandler(InvalidOperationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorDto> handleExcEntity(InvalidOperationException exception, WebRequest webRequest){
 
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;

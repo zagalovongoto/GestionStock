@@ -5,6 +5,7 @@ import java.util.List;
 import org.mambey.gestiondestock.controller.api.FournisseurApi;
 import org.mambey.gestiondestock.dto.FournisseurDto;
 import org.mambey.gestiondestock.services.FournisseurService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,10 @@ public class FournisseurController implements FournisseurApi{
     }
 
     @Override
-    public void delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
+
         fournisseurService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     

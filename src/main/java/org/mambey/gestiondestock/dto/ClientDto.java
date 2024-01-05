@@ -3,6 +3,7 @@ package org.mambey.gestiondestock.dto;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -35,6 +36,7 @@ public class ClientDto {
     private String mail;
 
     @NotBlank(message = "Veuillez renseigner le numero de téléphone")
+    @Email(message = "Invalid email format")
     private String numTel;
 
     @JsonIgnore

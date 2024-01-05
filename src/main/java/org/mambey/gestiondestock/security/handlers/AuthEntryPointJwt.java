@@ -1,11 +1,12 @@
 package org.mambey.gestiondestock.security.handlers;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.mambey.gestiondestock.exception.ErrorCodes;
+import org.mambey.gestiondestock.handlers.ErrorDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -41,19 +42,21 @@ public void commence(HttpServletRequest request, HttpServletResponse response, A
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-    /* final ErrorDto errorDto = ErrorDto.builder()
-      .code(exception.getErrorCode())
-      .httpCode(badRequest.value())
-      .message(exception.getMessage())
-      .build(); */
-
-    final Map<String, Object> body = new HashMap<>();
+    /* final Map<String, Object> body = new HashMap<>();
     body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
     body.put("error", "Unauthorized");
     body.put("message", authException.getMessage());
-    body.put("path", request.getServletPath());
+    body.put("path", request.getServletPath()); */
+
+    final ErrorDto body = ErrorDto.builder()
+      .code(ErrorCodes.UNAUTHORIZED)
+      .httpCode(HttpServletResponse.SC_UNAUTHORIZED)
+      .message(authException.getMessage())
+      .errors(null)
+      .build();
 
     final ObjectMapper mapper = new ObjectMapper();
+
     mapper.writeValue(response.getOutputStream(), body);
   }
 

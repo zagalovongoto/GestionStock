@@ -42,9 +42,10 @@ public class CommandeFournisseurController implements CommandeFournisseurApi{
     }
 
     @Override
-    public ResponseEntity<Void> delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
+
         commandeFournisseurService.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Override

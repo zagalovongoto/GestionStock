@@ -9,6 +9,8 @@ import org.mambey.gestiondestock.dto.LigneCommandeFournisseurDto;
 import org.mambey.gestiondestock.dto.LigneVenteDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +58,7 @@ public interface ArticleApi {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(operationId = "findAllArticle")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     List<ArticleDto> findAll();
 
     @GetMapping(
@@ -91,5 +94,5 @@ public interface ArticleApi {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(operationId = "deleteArticle")
-    void delete(@PathVariable("idArticle") Integer id);
+    ResponseEntity<?> delete(@PathVariable("idArticle") Integer id);
 }

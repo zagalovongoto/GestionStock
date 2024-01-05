@@ -5,6 +5,7 @@ import java.util.List;
 import org.mambey.gestiondestock.controller.api.CategoryApi;
 import org.mambey.gestiondestock.dto.CategoryDto;
 import org.mambey.gestiondestock.services.CategoryService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -31,8 +32,10 @@ public class CategoryController implements CategoryApi{
     }
 
     @Override
-    public void delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
         categoryService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 
     

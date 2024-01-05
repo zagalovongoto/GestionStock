@@ -5,6 +5,7 @@ import java.util.List;
 import org.mambey.gestiondestock.controller.api.ClientApi;
 import org.mambey.gestiondestock.dto.ClientDto;
 import org.mambey.gestiondestock.services.ClientService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,10 @@ public class ClientController implements ClientApi{
     }
 
     @Override
-    public void delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
         clientService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 
     

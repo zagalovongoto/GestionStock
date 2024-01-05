@@ -18,7 +18,6 @@ import org.mambey.gestiondestock.model.Utilisateur;
 import org.mambey.gestiondestock.repository.EntrepriseRepository;
 import org.mambey.gestiondestock.repository.RolesRepository;
 import org.mambey.gestiondestock.repository.UtilisateurRepository;
-import org.mambey.gestiondestock.security.model.ERole;
 import org.mambey.gestiondestock.services.EntrepriseService;
 import org.mambey.gestiondestock.services.ObjectsValidator;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,12 +58,16 @@ public class EntrepriseServiceImpl implements EntrepriseService{
         );
 
         UtilisateurDto utilisateurDto = fromEntreprise(savedEntreprise);
-        Roles userRole = rolesRepository.findByRoleName(ERole.ROLE_ADMIN)
+        /* Roles userRole = rolesRepository.findByRoleName(ERole.ROLE_ADMIN)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Aucun role avec le nom " + ERole.ROLE_ADMIN + " n'a été trouvé dans la BDD", 
-                        ErrorCodes.ROLE_NOT_FOUND));
+                        ErrorCodes.ROLE_NOT_FOUND)); */
+        List<Roles> userRoles = rolesRepository.findAll();
         Set<Roles> roles = new HashSet<>();
-        roles.add(userRole);
+        userRoles.forEach(role -> {
+            roles.add(role);
+        });
+        //roles.add(userRole);
         Utilisateur utilisateur = UtilisateurDto.toEntity(utilisateurDto);
         utilisateur.setRoles(roles);
 

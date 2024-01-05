@@ -6,6 +6,7 @@ import java.util.List;
 import org.mambey.gestiondestock.dto.UtilisateurDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,5 +58,5 @@ public interface UtilisateurApi {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(operationId = "deleteUtilisateur")
-    void delete(@PathVariable("idUtilisateur") Integer id);
+    ResponseEntity<?> delete(@PathVariable("idUtilisateur") Integer id);
 }

@@ -8,6 +8,7 @@ import org.mambey.gestiondestock.dto.LigneCommandeClientDto;
 import org.mambey.gestiondestock.dto.LigneCommandeFournisseurDto;
 import org.mambey.gestiondestock.dto.LigneVenteDto;
 import org.mambey.gestiondestock.services.ArticleService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
@@ -58,7 +59,9 @@ public class ArticleController implements ArticleApi{
     }
 
     @Override
-    public void delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
         articleService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }   
 }

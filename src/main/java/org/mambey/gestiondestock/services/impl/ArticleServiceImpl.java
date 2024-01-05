@@ -60,15 +60,20 @@ public class ArticleServiceImpl implements ArticleService{
         //On s'assure que la catégorie existe dans la base de données
         categoryService.findById(dto.getCategory().getId());
 
-        // On vérifie l'existence de l'article
-        if (articleRepository.existsByCodeArticle(dto.getCodeArticle())) {
-            log.error("L'article avec le code " + dto.getCodeArticle()+" existe déjà dans la base");
-            throw new EntityAlreadyExistsException("Un article avec ce code existe déjà", ErrorCodes.ARTICLE_ALREADY_IN_USE);
+        // On vérifie l'existence de l'article dans le cas d'un nouvel enregistrement
+        //pour éviter que deux articles aient le même codeArticle
+        if(dto.getId() == null){// S'il s'agit d'un nouvel enregistrement
+            if (articleRepository.existsByCodeArticle(dto.getCodeArticle())) {
+                log.error("L'article avec le code " + dto.getCodeArticle()+" existe déjà dans la base");
+                throw new EntityAlreadyExistsException("Un article avec ce code existe déjà", ErrorCodes.ARTICLE_ALREADY_IN_USE);
+            }
         }
 
-        return ArticleDto.fromEntity(
+        ArticleDto savedArticle = ArticleDto.fromEntity(
             articleRepository.save(ArticleDto.toEntity(dto))
         );
+
+        return savedArticle;
     }
 
     @Override

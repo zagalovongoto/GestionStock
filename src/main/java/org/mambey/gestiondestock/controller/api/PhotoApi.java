@@ -1,6 +1,8 @@
 package org.mambey.gestiondestock.controller.api;
 
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +24,13 @@ public interface PhotoApi {
     
     @PostMapping(
         value = "/photos/{id}/{title}/{context}",
-        consumes = MediaType.APPLICATION_JSON_VALUE, 
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE, 
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(operationId = "savePhoto")
-    Object savePhoto(@PathVariable("context") String context, @PathVariable("id") Integer id, @RequestPart("file") MultipartFile photo, @PathVariable("title") String title) throws FlickrException, IOException;
+    ResponseEntity<?> savePhoto(@PathVariable("context") String context, @PathVariable("id") Integer id, @RequestPart("file") MultipartFile photo, @PathVariable("title") String title) throws FlickrException, IOException;
+
+    @GetMapping(value="/photos/{context}/{id}", produces=MediaType.IMAGE_JPEG_VALUE)
+	byte[] getPhoto(@PathVariable String context, @PathVariable int id) throws Exception, IOException;
+
 }

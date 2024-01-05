@@ -1,14 +1,10 @@
 package org.mambey.gestiondestock.services.strategy;
 
-import java.io.InputStream;
-
 import org.mambey.gestiondestock.dto.UtilisateurDto;
-import org.mambey.gestiondestock.exception.ErrorCodes;
-import org.mambey.gestiondestock.exception.InvalidOperationException;
-import org.mambey.gestiondestock.services.FlickrService;
+import org.mambey.gestiondestock.services.FileStorageService;
 import org.mambey.gestiondestock.services.UtilisateurService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.flickr4java.flickr.FlickrException;
 
@@ -18,19 +14,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SaveUtilisateurPhoto implements Strategy{
 
-    private final FlickrService flickrService;
+    private final FileStorageService fileStorageService;
     private final UtilisateurService utilisateurService;
 
     @Override
-    public UtilisateurDto savePhoto(Integer id, InputStream photo, String titre) throws FlickrException {
+    public UtilisateurDto savePhoto(Integer id, MultipartFile photo) throws FlickrException {
         
         UtilisateurDto utilisateur = utilisateurService.findById(id);
-        String urlPhoto = flickrService.savePhoto(photo, titre);
 
-        if(StringUtils.hasLength(urlPhoto)){
-            throw new InvalidOperationException("Erreur lors de l'enregistrement de la photo", ErrorCodes.UPDATE_PHOTO_EXCEPTION);
-        }
-
+        String urlPhoto = fileStorageService.storeFile(photo, utilisateur.getId(), utilisateur.getNom(), "utilisateur");
         utilisateur.setPhoto(urlPhoto);
         
         return utilisateurService.save(utilisateur);

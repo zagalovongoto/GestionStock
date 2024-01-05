@@ -5,6 +5,7 @@ import java.util.List;
 import org.mambey.gestiondestock.controller.api.EntrepriseApi;
 import org.mambey.gestiondestock.dto.EntrepriseDto;
 import org.mambey.gestiondestock.services.EntrepriseService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -31,8 +32,10 @@ public class EntrepriseController implements EntrepriseApi{
     }
 
     @Override
-    public void delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
+
         entrepriseService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     

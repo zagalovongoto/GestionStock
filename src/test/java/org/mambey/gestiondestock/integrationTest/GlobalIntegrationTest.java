@@ -161,7 +161,7 @@ public class GlobalIntegrationTest {
 
     private JSONObject loginJson() throws JSONException{
         JSONObject loginJson = new JSONObject();
-        loginJson.put("username", email);
+        loginJson.put("email", email);
         loginJson.put("password", password);
 
         return loginJson;

@@ -2,6 +2,7 @@ package org.mambey.gestiondestock.model;
 
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -39,7 +40,7 @@ public class Article extends AbstractEntity{
     @Column(name = "photo")
     private String photo;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "idcategory")
     private Category category;
 

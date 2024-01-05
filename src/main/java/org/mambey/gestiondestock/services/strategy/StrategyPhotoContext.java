@@ -1,11 +1,10 @@
 package org.mambey.gestiondestock.services.strategy;
 
-import java.io.InputStream;
-
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.flickr4java.flickr.FlickrException;
 
@@ -24,10 +23,10 @@ public class StrategyPhotoContext {
         this.beanFactory = beanFactory;
     }
 
-    public Object savePhoto(String context, Integer id, InputStream photo, String title) throws FlickrException{
+    public Object savePhoto(String context, Integer id, MultipartFile photo, String title) throws FlickrException{
 
         determineContext(context);
-        return strategy.savePhoto(id, photo, title);
+        return strategy.savePhoto(id, photo);
     }
 
     private void determineContext(String context){

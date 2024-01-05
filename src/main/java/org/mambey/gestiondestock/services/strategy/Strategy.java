@@ -1,10 +1,10 @@
 package org.mambey.gestiondestock.services.strategy;
 
-import java.io.InputStream;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.flickr4java.flickr.FlickrException;
 
 public interface Strategy {
     
-    Object savePhoto(Integer id, InputStream photo, String titre) throws FlickrException;
+    Object savePhoto(Integer id, MultipartFile photo) throws FlickrException;
 }

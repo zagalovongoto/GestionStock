@@ -116,5 +116,5 @@ public interface CommandeClientApi {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(operationId = "deleteCmdClt")
-    ResponseEntity<Void> delete(@PathVariable("idCommandeClient") Integer id);
+    ResponseEntity<?> delete(@PathVariable("idCommandeClient") Integer id);
 }

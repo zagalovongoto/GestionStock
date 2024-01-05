@@ -5,6 +5,7 @@ import java.util.List;
 import org.mambey.gestiondestock.controller.api.UtilisateurApi;
 import org.mambey.gestiondestock.dto.UtilisateurDto;
 import org.mambey.gestiondestock.services.UtilisateurService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,10 @@ public class UtilisateurController implements UtilisateurApi{
     }
 
     @Override
-    public void delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
+
         utilisateurService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Override

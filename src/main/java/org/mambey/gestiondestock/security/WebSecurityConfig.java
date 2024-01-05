@@ -13,6 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.mambey.gestiondestock.security.handlers.AuthEntryPointJwt;
 import org.mambey.gestiondestock.security.handlers.CustomAccessDeniedHandler;
 import org.mambey.gestiondestock.security.service.UserDetailsServiceImpl;
@@ -60,31 +64,50 @@ public class WebSecurityConfig {
   
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.cors(cors -> cors.disable())
-        .csrf(csrf -> csrf.disable())
+    http.csrf(csrf -> csrf.disable())
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler)
-                                                 .accessDeniedHandler(forbiddenHandler)
+                                                    .accessDeniedHandler(forbiddenHandler)
         )
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> 
           auth.antMatchers(
-            "/**/**/auth/authenticate",//end point pour s'authentifier et obtenir un token
-            "/**/**/entreprises/create",//Créer une entreprise et son user principal
-            "/**/**/utilisateurs/create",//ajouter un utilisateur
-            "/swagger-ui/**",//swagger-ui/index.html pour générer la documentation
-            "/v3/api-docs**/**",//renvoie le fichier json ///v3/api-docs.yaml télécharge le fichier yaml
-            "/initialize"
-          ).permitAll()
-           .anyRequest().authenticated()
+                    "/**/**/auth/authenticate",//end point pour s'authentifier et obtenir un token
+                    "/**/**/entreprises/create",//Créer une entreprise et son user principal
+                    "/**/**/utilisateurs/create",//ajouter un utilisateur
+                    "/swagger-ui/**",//swagger-ui/index.html pour générer la documentation
+                    "/v3/api-docs**/**",//renvoie le fichier json ///v3/api-docs.yaml télécharge le fichier yaml
+                    "/initialize",
+                    "/**/**/photos/**"
+                  ).permitAll()
+              .anyRequest().authenticated()
         );
-    
+
     // fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'
     //http.headers(headers -> headers.frameOptions(frameOption -> frameOption.sameOrigin()));
-    http.cors();
     http.authenticationProvider(authenticationProvider());
 
-    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(corsFilter(), UsernamePasswordAuthenticationFilter.class)//Autoriser les requêtes preflight de CORS
+        .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     
     return http.build();
+  }
+
+  @Bean
+  public CorsFilter corsFilter() {
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      CorsConfiguration config = new CorsConfiguration();
+      config.setAllowCredentials(true);//Autorise les cookies
+      config.addAllowedOrigin("http://localhost:4200"); // Remplacez par l'origine de votre application Angular
+      config.addAllowedHeader("*");
+      config.addAllowedMethod("OPTIONS");
+      config.addAllowedMethod("GET");
+      config.addAllowedMethod("POST");
+      config.addAllowedMethod("PUT");
+      config.addAllowedMethod("PATCH");
+      config.addAllowedMethod("DELETE");
+      config.setMaxAge(3600L);
+
+      source.registerCorsConfiguration("/**", config);
+      return new CorsFilter((CorsConfigurationSource) source); // Cast vers CorsConfigurationSource
   }
 }

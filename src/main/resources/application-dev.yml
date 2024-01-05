@@ -23,8 +23,8 @@ server:
   port: 8881
 
 flickr:
-  apiKey: 45e3d74fde72fa6a0f26be013e27024b
-  apiSecret: c1f473f79c1e7b99
+  apiKey: 21afae5646e01df8b2cba088bef1f0d9
+  apiSecret: 30d27f0d5c5958ba
   appKey: 72157720884054158-79f70eebab71910d
   appSecret: 53cfc158c56ce6a1
 
@@ -37,6 +37,12 @@ edem:
 
 defaultUserPassword: Zagzagzag
 
+#uploadDir: /Users/admin/gestionStockUploads
+#uploadDir: src${file.separator}main${file.separator}resources${file.separator}uploads${file.separator}
+uploadDir: ${user.home}${file.separator}gestiondestock${file.separator}uploads${file.separator}
+
+defaultImageName: default.jpg
+
 springdoc:
   swagger-ui:
     enabled: true
@@ -46,7 +52,8 @@ logging:
     org:
       springframework: DEBUG
   file:
-    name: /Users/admin/gestiondestock.log
+    #name: /Users/admin/gestiondestock.log
+    name: ${user.home}${file.separator}gestiondestock${file.separator}logs${file.separator}gestiondestock.log
 
 
   

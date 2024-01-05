@@ -21,6 +21,10 @@ gimuemoa:
 
 defaultUserPassword: Zagzagzag
 
+uploadDir: ${user.home}${file.separator}gestiondestock${file.separator}uploads${file.separator}
+
+defaultImageName: default.jpg
+
 logging:
   level:
     root: INFO
