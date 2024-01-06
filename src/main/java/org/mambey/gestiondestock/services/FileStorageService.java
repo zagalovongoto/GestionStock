@@ -6,9 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileStorageService {
     
-    String storeFile(MultipartFile file, int idArticle, String codeArticle, String context);
+    String storeFile(MultipartFile file, String fileName, String context);
 
     String getUploadFolder(String context);
 
-    byte[] getPhoto(String context, int id) throws IOException;
+    byte[] getPhoto(String nomRepertoire, String nomPhoto) throws IOException;
 }

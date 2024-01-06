@@ -1,13 +1,10 @@
 package org.mambey.gestiondestock.services.impl;
 
-import org.mambey.gestiondestock.dto.ArticleDto;
 import org.mambey.gestiondestock.exception.EntityNotFoundException;
 import org.mambey.gestiondestock.exception.ErrorCodes;
-import org.mambey.gestiondestock.services.ArticleService;
 import org.mambey.gestiondestock.services.FileStorageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
@@ -22,8 +19,6 @@ import java.nio.file.Paths;
 @RequiredArgsConstructor
 public class FileStorageServiceImpl implements FileStorageService {
 
-    private final ArticleService articleService;
-
     @Value("${uploadDir}")
     private String uploadDir;
 
@@ -31,45 +26,44 @@ public class FileStorageServiceImpl implements FileStorageService {
     private String defaultImageName;
 
     @Override
-    public String storeFile(MultipartFile file, int idArticle, String codeArticle, String context) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String fileExtension = fileName.substring(fileName.lastIndexOf("."));
-        fileName = idArticle + "_" + codeArticle + fileExtension;
-        ArticleDto article = articleService.findById(idArticle);
-
+    public String storeFile(MultipartFile file, String nomFichier, String nomRepertoire) {
+        
         try {
 
-            Path uploadPath = Paths.get(this.getUploadFolder(context));
+            Path uploadPath = Paths.get(this.getUploadFolder(nomRepertoire));
 
             if (!Files.exists(uploadPath)) {
+
                 Files.createDirectories(uploadPath);
             }
 
-            Path filePath = uploadPath.resolve(fileName);
+            Path filePath = uploadPath.resolve(nomFichier);
+
+            //Si un fichier avec le même nom existe on le supprime
+            if(Files.exists(filePath)){
+
+                Files.delete(filePath);
+            }
+
             Files.copy(file.getInputStream(), filePath);
 
-            article.setPhoto(fileName);
-            articleService.save(article);
-
-            //return filePath.toString();
-            return String.valueOf(fileName);
+            return nomFichier;
 
         } catch (IOException e) {
-            throw new RuntimeException("Failed to store file: " + fileName, e);
+            throw new RuntimeException("Failed to store file: " + nomFichier, e);
         }
     }
 
-    public byte[] getPhoto(String context, int id) throws IOException{
+    //Input: nom du repertoire & nom de la photo
+    public byte[] getPhoto(String nomReportoire, String nomPhoto) throws IOException{
 
-        ArticleDto article = articleService.findById(id);
-
-        File file = new File(this.getUploadFolder(context) + article.getPhoto());
+        File file = new File(this.getUploadFolder(nomReportoire) + nomPhoto);
 
         if(file.isFile() && file.exists()){
             Path filePath = file.toPath();
             return Files.readAllBytes(filePath);
         }else{
-            File defaultFile = new File(this.getUploadFolder(context) + this.defaultImageName);
+            File defaultFile = new File(this.getUploadFolder(nomReportoire) + this.defaultImageName);
             
             if(defaultFile.isFile() && defaultFile.exists()){
                 Path filePath = defaultFile.toPath();

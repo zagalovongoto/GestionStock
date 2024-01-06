@@ -33,10 +33,10 @@ public class ClientDto {
     private String photo;
 
     @NotBlank(message = "Veuillez renseigner le mail du client")
+    @Email(message = "Invalid email format")
     private String mail;
 
     @NotBlank(message = "Veuillez renseigner le numero de téléphone")
-    @Email(message = "Invalid email format")
     private String numTel;
 
     @JsonIgnore

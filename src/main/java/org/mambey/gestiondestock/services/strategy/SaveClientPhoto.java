@@ -1,5 +1,7 @@
 package org.mambey.gestiondestock.services.strategy;
 
+import java.io.IOException;
+
 import org.mambey.gestiondestock.dto.ClientDto;
 import org.mambey.gestiondestock.services.ClientService;
 import org.mambey.gestiondestock.services.FileStorageService;
@@ -14,16 +16,30 @@ public class SaveClientPhoto implements Strategy{
 
     private final ClientService clientService;
     private final FileStorageService fileStorageService;
+    private final String nomRepertoire = "client";//Nom du repertoire qui doit contenir les fichiers
 
     @Override
-    public ClientDto savePhoto(Integer id, MultipartFile photo) {
+    public String savePhoto(Integer idClient, MultipartFile file) {
         
-        ClientDto client = clientService.findById(id);
-        String urlPhoto = fileStorageService.storeFile(photo, client.getId(), client.getNom(), "client");
+        ClientDto client = clientService.findById(idClient);
 
-        client.setPhoto(urlPhoto);
+        //Stratégie de nommage: id_nom_prenom
+        String nomFichier = idClient + "_" + client.getNom()+"_" + client.getPrenom() + this.getFileExtension(file);;
+
+        String response = fileStorageService.storeFile(file, nomFichier, nomRepertoire);
+
+        client.setPhoto(nomFichier);
         
-        return clientService.save(client);
+        clientService.save(client);
+
+        return response;
+    }
+
+    public byte[] getPhoto(Integer id) throws IOException{
+
+        ClientDto client = clientService.findById(id);
+
+        return fileStorageService.getPhoto(nomRepertoire, client.getPhoto());
     }
     
 }

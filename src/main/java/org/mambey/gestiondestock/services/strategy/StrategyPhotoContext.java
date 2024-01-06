@@ -1,5 +1,7 @@
 package org.mambey.gestiondestock.services.strategy;
 
+import java.io.IOException;
+
 import org.mambey.gestiondestock.exception.ErrorCodes;
 import org.mambey.gestiondestock.exception.InvalidOperationException;
 import org.springframework.beans.factory.BeanFactory;
@@ -23,10 +25,18 @@ public class StrategyPhotoContext {
         this.beanFactory = beanFactory;
     }
 
-    public Object savePhoto(String context, Integer id, MultipartFile photo, String title) throws FlickrException{
+    public String savePhoto(String context, Integer id, MultipartFile photo) throws FlickrException{
 
         determineContext(context);
+
         return strategy.savePhoto(id, photo);
+    }
+
+    public byte[] getPhoto(String context, Integer id) throws IOException{
+
+        determineContext(context);
+
+        return strategy.getPhoto(id);
     }
 
     private void determineContext(String context){
