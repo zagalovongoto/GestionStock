@@ -27,7 +27,6 @@ import org.mambey.gestiondestock.services.ObjectsValidator;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -149,6 +148,13 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
+    public List<ArticleDto> findByCodeArticleContainingIgnoreCaseOrDesignationContainingIgnoreCase(String motCle) {
+        return articleRepository.findByCodeArticleContainingIgnoreCaseOrDesignationContainingIgnoreCase(motCle, motCle).stream()
+                .map(ArticleDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void delete(Integer id) {
 
         if(id == null){
@@ -183,4 +189,5 @@ public class ArticleServiceImpl implements ArticleService{
 
         articleRepository.deleteById(id);
     }
+
 }

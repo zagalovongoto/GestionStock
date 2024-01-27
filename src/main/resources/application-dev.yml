@@ -22,12 +22,6 @@ gimuemoa:
 server:
   port: 8881
 
-flickr:
-  apiKey: 21afae5646e01df8b2cba088bef1f0d9
-  apiSecret: 30d27f0d5c5958ba
-  appKey: 72157720884054158-79f70eebab71910d
-  appSecret: 53cfc158c56ce6a1
-
 # App Security Properties
 edem:
   app:
@@ -49,8 +43,10 @@ springdoc:
 
 logging:
   level:
+    root: WARN
     org:
-      springframework: DEBUG
+      springframework: WARN
+
   file:
     #name: /Users/admin/gestiondestock.log
     name: ${user.home}${file.separator}gestiondestock${file.separator}logs${file.separator}gestiondestock.log

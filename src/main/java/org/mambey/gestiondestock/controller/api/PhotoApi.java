@@ -23,12 +23,12 @@ import java.io.IOException;
 public interface PhotoApi {
     
     @PostMapping(
-        value = "/photos/{id}/{title}/{context}",
+        value = "/photos/{id}/{context}",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE, 
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(operationId = "savePhoto")
-    ResponseEntity<?> savePhoto(@PathVariable("context") String context, @PathVariable("id") Integer id, @RequestPart("file") MultipartFile photo, @PathVariable("title") String title) throws FlickrException, IOException;
+    ResponseEntity<?> savePhoto(@PathVariable("context") String context, @PathVariable("id") Integer id, @RequestPart("file") MultipartFile photo) throws FlickrException, IOException;
 
     @GetMapping(value="/photos/{context}/{id}", produces=MediaType.IMAGE_JPEG_VALUE)
 	byte[] getPhoto(@PathVariable String context, @PathVariable int id) throws Exception, IOException;

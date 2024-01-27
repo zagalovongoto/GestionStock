@@ -22,18 +22,18 @@ gimuemoa:
 server:
   port: 8881
 
-flickr:
-  apiKey: 45e3d74fde72fa6a0f26be013e27024b
-  apiSecret: c1f473f79c1e7b99
-  appKey: 72157720884054158-79f70eebab71910d
-  appSecret: 53cfc158c56ce6a1
-
 # App Security Properties
 edem:
   app:
     jwtHeaderName: Authorization
     jwtSecret: ======================BezKoder=Spring===========================
     jwtExpirationMs: 86400000
+
+#uploadDir: /Users/admin/gestionStockUploads
+#uploadDir: src${file.separator}main${file.separator}resources${file.separator}uploads${file.separator}
+uploadDir: ${user.home}${file.separator}gestiondestock${file.separator}uploads${file.separator}
+
+defaultImageName: default.jpg
 
 defaultUserPassword: Zagzagzag
 

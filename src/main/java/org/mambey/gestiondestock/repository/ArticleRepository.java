@@ -21,6 +21,8 @@ public interface ArticleRepository extends JpaRepository<Article, Integer>{
     //Peut ignorer la casse
     Article findByCodeArticleIgnoreCaseAndDesignationIgnoreCase(String code, String designation);
 
+    List<Article>  findByCodeArticleContainingIgnoreCaseOrDesignationContainingIgnoreCase(String motCle1, String motCle2);
+
     // Exemple de requête personnalisée ** Requête JPQL/HQL
     @Query("select a from Article a where codeArticle = :code and designation = :designation")
     List<Article> findByCustumQuery(String code, String designation);

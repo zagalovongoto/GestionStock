@@ -9,6 +9,8 @@ services:
       - "8882:8881"
     env_file:
       - ./gestiondestock-env-file.env  # Path to your combined environment file
+    volumes:
+        - ${HOME}/gestiondestock/uploads:${HOME}/gestiondestock/uploads
     depends_on:
       - db-container
 

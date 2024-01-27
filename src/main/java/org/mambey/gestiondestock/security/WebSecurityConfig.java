@@ -96,8 +96,9 @@ public class WebSecurityConfig {
   public CorsFilter corsFilter() {
       UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
       CorsConfiguration config = new CorsConfiguration();
-      config.setAllowCredentials(true);//Autorise les cookies
-      config.addAllowedOrigin("http://localhost:4200"); // Remplacez par l'origine de votre application Angular
+      config.setAllowCredentials(false);//Autorise les cookies
+      //config.addAllowedOrigin("http://localhost:4200"); // Remplacez par l'origine de votre application Angular
+      config.addAllowedOrigin("*");
       config.addAllowedHeader("*");
       config.addAllowedMethod("OPTIONS");
       config.addAllowedMethod("GET");

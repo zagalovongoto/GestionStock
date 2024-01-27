@@ -81,7 +81,7 @@ public class CommandeClientServiceImpl implements CommandeClientService{
             throw new EntityNotFoundException("Aucun client aavec l'ID " + dto.getClient().getId() + " n'a été trouvé dans la BDD");
         }
 
-        // On vérifie que les différents articles de la command existent bien dans la BDD
+        // On vérifie que les différents articles de la commande existent bien dans la BDD
         List<String> articleErrors = new ArrayList<>();
         if(dto.getLigneCommandeClients() != null){
             dto.getLigneCommandeClients().forEach(ligneCmdClt -> {
@@ -101,16 +101,19 @@ public class CommandeClientServiceImpl implements CommandeClientService{
             throw new InvalidEntityException("Article n'existe pas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND, articleErrors);
         }
 
+        if(dto.getLigneCommandeClients() == null || dto.getLigneCommandeClients().isEmpty()){
+            log.warn("Commande invalide", ErrorCodes.COMMANDE_CLIENT_NOT_VALID);
+            throw new InvalidEntityException("Impossible d'ajouter une commande sans lignes de commande", ErrorCodes.COMMANDE_CLIENT_NOT_VALID, null);
+        }
+
         CommandeClient savedCmdClt = commandeClientRepository.save(CommandeClientDto.toEntity(dto));
 
-        if(dto.getLigneCommandeClients() != null){
-            dto.getLigneCommandeClients().forEach(ligneCmdCltDto -> {
-                LigneCommandeClient ligneCmdClt = LigneCommandeClientDto.toEntity(ligneCmdCltDto);
-                ligneCmdClt.setCommandeClient(savedCmdClt);
-                ligneCmdClt.setIdEntreprise(idEntreprise);
-                ligneCommandeClientRepository.save(ligneCmdClt);
-            });
-        }
+        dto.getLigneCommandeClients().forEach(ligneCmdCltDto -> {
+            LigneCommandeClient ligneCmdClt = LigneCommandeClientDto.toEntity(ligneCmdCltDto);
+            ligneCmdClt.setCommandeClient(savedCmdClt);
+            ligneCmdClt.setIdEntreprise(idEntreprise);
+            ligneCommandeClientRepository.save(ligneCmdClt);
+        });
 
         return CommandeClientDto.fromEntity(savedCmdClt);
     }

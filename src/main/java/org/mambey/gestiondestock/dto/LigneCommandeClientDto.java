@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
 
+import org.mambey.gestiondestock.model.Article;
 import org.mambey.gestiondestock.model.LigneCommandeClient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,10 +38,18 @@ public class LigneCommandeClientDto {
             return null;
         }
 
+        Article article = ligneCommandeClient.getArticle();
+
         return LigneCommandeClientDto.builder()
             .id(ligneCommandeClient.getId())
-            .article(ArticleDto.fromEntity(ligneCommandeClient.getArticle()))
-            .commandeClient(CommandeClientDto.fromEntity(ligneCommandeClient.getCommandeClient()))
+            .article(
+                    ArticleDto.builder()
+                            .id(article.getId())
+                            .codeArticle(article.getCodeArticle())
+                            .designation(article.getDesignation())
+                            .build()
+            )
+            //.commandeClient(CommandeClientDto.fromEntity(ligneCommandeClient.getCommandeClient()))
             .quantite(ligneCommandeClient.getQuantite())
             .prixUnitaire(ligneCommandeClient.getPrixUnitaire())
             .idEntreprise(ligneCommandeClient.getIdEntreprise())

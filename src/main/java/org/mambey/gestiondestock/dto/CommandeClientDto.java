@@ -2,6 +2,7 @@ package org.mambey.gestiondestock.dto;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -32,7 +33,7 @@ public class CommandeClientDto {
     @NotNull(message = "Veuillez renseigner le client")
     private ClientDto client;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<LigneCommandeClientDto> ligneCommandeClients;
 
     private Integer idEntreprise;
@@ -50,6 +51,12 @@ public class CommandeClientDto {
             .etatCommade(commandeClient.getEtatCommade())
             .client(ClientDto.fromEntity(commandeClient.getClient()))
             .idEntreprise(commandeClient.getIdEntreprise())
+            .ligneCommandeClients(
+                    commandeClient.getLigneCommandeClients() != null ?
+                            commandeClient.getLigneCommandeClients().stream()
+                                    .map(LigneCommandeClientDto::fromEntity)
+                                    .collect(Collectors.toList()) : null
+            )
             .build();
 
     }

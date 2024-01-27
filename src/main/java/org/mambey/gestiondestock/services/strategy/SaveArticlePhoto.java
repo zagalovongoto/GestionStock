@@ -9,7 +9,6 @@ import org.mambey.gestiondestock.services.FileStorageService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import lombok.RequiredArgsConstructor;
 
 @Service("articleStrategy")

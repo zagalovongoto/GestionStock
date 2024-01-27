@@ -6,6 +6,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.mambey.gestiondestock.model.Article;
 
 import lombok.Builder;
@@ -13,6 +14,7 @@ import lombok.Data;
 
 @Builder
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ArticleDto {
      
     private Integer id;

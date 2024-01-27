@@ -24,7 +24,7 @@ public class PhotoController implements PhotoApi{
     }
 
     @Override
-    public ResponseEntity<?> savePhoto(String context, Integer id, MultipartFile photo, String title) throws FlickrException, IOException {
+    public ResponseEntity<?> savePhoto(String context, Integer id, MultipartFile photo) throws FlickrException, IOException {
         
         String response = strategyPhotoContext.savePhoto(context, id, photo);
 

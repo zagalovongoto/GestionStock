@@ -4,6 +4,8 @@ FROM openjdk:17-alpine
 # Définissez le répertoire de travail
 WORKDIR /app
 
+RUN mkdir -p $HOME/gestiondestock/uploads
+
 # Copiez le JAR de l'application (assurez-vous que le JAR est construit avant de construire l'image Docker)
 COPY target/gestiondestock-0.0.1-SNAPSHOT.jar gestiondestock.jar
 

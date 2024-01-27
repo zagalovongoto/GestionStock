@@ -10,6 +10,7 @@ import org.mambey.gestiondestock.dto.LigneVenteDto;
 import org.mambey.gestiondestock.services.ArticleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class ArticleController implements ArticleApi{
     
     private final ArticleService articleService;
+    //private final String context = "article";
 
     @Override
     public ArticleDto save(ArticleDto dto) {
@@ -35,7 +37,18 @@ public class ArticleController implements ArticleApi{
 
     @Override
     public List<ArticleDto> findAll() {
-        return articleService.findAll();
+        
+        return articleService.findAll();/* .stream()
+                      .map(article -> {
+                        article.setPhoto(UrlGenerator.generate(context, article.getId()));
+                        return article;
+                      })
+                      .collect(Collectors.toList()); */
+                      
+    }
+
+    public List<ArticleDto> findByMotCle(String motCle){
+        return articleService.findByCodeArticleContainingIgnoreCaseOrDesignationContainingIgnoreCase(motCle);
     }
 
     @Override

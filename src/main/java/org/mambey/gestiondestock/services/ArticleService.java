@@ -6,6 +6,7 @@ import org.mambey.gestiondestock.dto.ArticleDto;
 import org.mambey.gestiondestock.dto.LigneCommandeClientDto;
 import org.mambey.gestiondestock.dto.LigneCommandeFournisseurDto;
 import org.mambey.gestiondestock.dto.LigneVenteDto;
+import org.mambey.gestiondestock.model.Article;
 
 public interface ArticleService {
     
@@ -24,6 +25,8 @@ public interface ArticleService {
     List<LigneCommandeFournisseurDto> findHistoriqueCommandeFournisseur(Integer idArticle);
 
     List<ArticleDto> findAllArticleByIdCategory(Integer idCategory);
+
+    List<ArticleDto>  findByCodeArticleContainingIgnoreCaseOrDesignationContainingIgnoreCase(String motCle);
 
     void delete(Integer id);
     
